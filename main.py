@@ -1,5 +1,6 @@
 import random
 import string
+import asyncio
 
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
@@ -95,6 +96,10 @@ async def create_room():
 
         "started": False,
 
+        "auto_calling": False,
+
+        "auto_call_task": None,
+
         "winners": {
 
             "early5": None,
@@ -127,6 +132,100 @@ async def health():
         "status": "online",
         "game": "Online Housie"
     }
+
+
+# =====================================================
+# AUTOMATIC NUMBER CALLER
+# =====================================================
+
+async def automatic_number_caller(room_code):
+
+    while room_code in rooms:
+
+        room = rooms[room_code]
+
+
+        # Stop if automatic calling is disabled
+        if not room.get(
+            "auto_calling",
+            False
+        ):
+
+            break
+
+
+        # Get available numbers
+        available_numbers = [
+
+            number
+
+            for number in range(1, 91)
+
+            if number
+            not in room["called_numbers"]
+
+        ]
+
+
+        # All numbers have been called
+        if not available_numbers:
+
+            room["auto_calling"] = False
+
+            await broadcast(
+
+                room_code,
+
+                {
+
+                    "type":
+                        "game_finished"
+
+                }
+
+            )
+
+            break
+
+
+        # Pick random number
+        number = random.choice(
+            available_numbers
+        )
+
+
+        # Save number
+        room["called_numbers"].append(
+            number
+        )
+
+
+        room["current_number"] = number
+
+
+        # Send number to everyone
+        await broadcast(
+
+            room_code,
+
+            {
+
+                "type":
+                    "number_called",
+
+                "number":
+                    number,
+
+                "called_numbers":
+                    room["called_numbers"]
+
+            }
+
+        )
+
+
+        # Wait 5 seconds
+        await asyncio.sleep(5)
 
 
 # =====================================================
@@ -282,7 +381,9 @@ async def websocket_endpoint(
         # UPDATE PLAYER LIST
         # =============================================
 
-        await broadcast_players(room_code)
+        await broadcast_players(
+            room_code
+        )
 
 
         # =============================================
@@ -317,22 +418,151 @@ async def websocket_endpoint(
                     continue
 
 
+                # -------------------------------------
+                # GAME ALREADY STARTED
+                # -------------------------------------
+
                 if room["started"]:
+
+                    # Start automatic calling again
+                    # if it was stopped.
+
+                    if not room.get(
+                        "auto_calling",
+                        False
+                    ):
+
+                        room["auto_calling"] = True
+
+
+                        room["auto_call_task"] = (
+                            asyncio.create_task(
+
+                                automatic_number_caller(
+                                    room_code
+                                )
+
+                            )
+                        )
+
+
+                        await broadcast(
+
+                            room_code,
+
+                            {
+
+                                "type":
+                                    "auto_calling_started"
+
+                            }
+
+                        )
 
                     continue
 
 
+                # -------------------------------------
+                # START GAME
+                # -------------------------------------
+
                 room["started"] = True
 
 
+                room["auto_calling"] = True
+
+
                 await broadcast(
+
                     room_code,
+
                     {
 
                         "type":
                             "game_started"
 
                     }
+
+                )
+
+
+                # -------------------------------------
+                # START AUTOMATIC CALLING
+                # -------------------------------------
+
+                room["auto_call_task"] = (
+                    asyncio.create_task(
+
+                        automatic_number_caller(
+                            room_code
+                        )
+
+                    )
+                )
+
+
+                await broadcast(
+
+                    room_code,
+
+                    {
+
+                        "type":
+                            "auto_calling_started"
+
+                    }
+
+                )
+
+
+            # =========================================
+            # STOP AUTOMATIC CALLING
+            # =========================================
+
+            elif action == "stop_calling":
+
+                if player != room["host"]:
+
+                    await websocket.send_json({
+
+                        "type":
+                            "error",
+
+                        "message":
+                            "Only the host can stop automatic calling."
+
+                    })
+
+                    continue
+
+
+                room["auto_calling"] = False
+
+
+                task = room.get(
+                    "auto_call_task"
+                )
+
+
+                if task and not task.done():
+
+                    task.cancel()
+
+
+                room["auto_call_task"] = None
+
+
+                await broadcast(
+
+                    room_code,
+
+                    {
+
+                        "type":
+                            "auto_calling_stopped"
+
+                    }
+
                 )
 
 
@@ -582,6 +812,23 @@ async def websocket_endpoint(
         # =============================================
 
         if player == room["host"]:
+
+            # Stop automatic calling
+            room["auto_calling"] = False
+
+
+            task = room.get(
+                "auto_call_task"
+            )
+
+
+            if task and not task.done():
+
+                task.cancel()
+
+
+            room["auto_call_task"] = None
+
 
             if room["players"]:
 
