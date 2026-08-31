@@ -3,10 +3,15 @@ import random
 
 def generate_ticket():
     """
-    Generate a standard 3 x 9 Housie ticket.
+    Generate a standard 3 x 9 Housie/Tambola ticket.
 
-    Each row has exactly 5 numbers.
-    Total numbers = 15.
+    Rules:
+    - 3 rows
+    - 9 columns
+    - 5 numbers in every row
+    - 15 numbers total
+    - Every column contains at least one number
+    - Numbers follow standard Housie column ranges
     """
 
     column_ranges = [
@@ -23,13 +28,13 @@ def generate_ticket():
 
     while True:
 
-        # Select 5 columns for every row
+        # Select exactly 5 columns for each row.
         row_columns = [
             random.sample(range(9), 5)
             for _ in range(3)
         ]
 
-        # Every column must contain at least one number
+        # Every column must be used at least once.
         used_columns = set()
 
         for row in row_columns:
@@ -43,7 +48,7 @@ def generate_ticket():
             for _ in range(3)
         ]
 
-        # Fill columns
+        # Fill each column.
         for column in range(9):
 
             rows = [
@@ -57,10 +62,20 @@ def generate_ticket():
                 len(rows)
             )
 
+            # Standard ticket ordering.
             numbers.sort()
 
             for row, number in zip(rows, numbers):
-
                 ticket[row][column] = number
 
-        return ticket
+        # Safety check:
+        # Every row must contain exactly 5 numbers.
+        if all(
+            sum(
+                number is not None
+                for number in row
+            ) == 5
+            for row in ticket
+        ):
+
+            return ticket
