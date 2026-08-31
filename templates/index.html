@@ -229,6 +229,18 @@ CURRENT NUMBER
 
 
 <button
+    id="stopButton"
+    class="stop-button"
+    onclick="stopCalling()"
+    disabled
+>
+
+⏹ STOP CALLING
+
+</button>
+
+
+<button
     id="callButton"
     class="call-button"
     onclick="callNumber()"
@@ -604,6 +616,32 @@ SEND
 
 </div>
 
+
+</div>
+
+
+
+<!-- =====================================================
+CHAT POPUP
+===================================================== -->
+
+<div
+    id="chatPopup"
+    class="chat-popup"
+>
+
+<div
+    id="chatPopupTitle"
+    class="chat-popup-title"
+>
+💬 NEW MESSAGE
+</div>
+
+<div
+    id="chatPopupMessage"
+    class="chat-popup-message"
+>
+</div>
 
 </div>
 
@@ -1070,6 +1108,12 @@ function connectToRoom(
                     );
 
 
+                const stopButton =
+                    document.getElementById(
+                        "stopButton"
+                    );
+
+
                 const callButton =
                     document.getElementById(
                         "callButton"
@@ -1080,6 +1124,14 @@ function connectToRoom(
 
                     startButton.disabled =
                         true;
+
+                }
+
+
+                if (stopButton) {
+
+                    stopButton.disabled =
+                        false;
 
                 }
 
@@ -1096,6 +1148,100 @@ function connectToRoom(
                     "message"
                 ).innerText =
                     "🎮 Game started! Good luck!";
+
+            }
+
+
+
+            /* =========================================
+            AUTOMATIC CALLING STARTED
+            ========================================= */
+
+            if (
+                data.type ===
+                "auto_calling_started"
+            ) {
+
+
+                const startButton =
+                    document.getElementById(
+                        "startButton"
+                    );
+
+
+                const stopButton =
+                    document.getElementById(
+                        "stopButton"
+                    );
+
+
+                if (startButton) {
+
+                    startButton.disabled =
+                        true;
+
+                }
+
+
+                if (stopButton) {
+
+                    stopButton.disabled =
+                        false;
+
+                }
+
+
+                document.getElementById(
+                    "message"
+                ).innerText =
+                    "📢 Automatic calling started!";
+
+            }
+
+
+
+            /* =========================================
+            AUTOMATIC CALLING STOPPED
+            ========================================= */
+
+            if (
+                data.type ===
+                "auto_calling_stopped"
+            ) {
+
+
+                const startButton =
+                    document.getElementById(
+                        "startButton"
+                    );
+
+
+                const stopButton =
+                    document.getElementById(
+                        "stopButton"
+                    );
+
+
+                if (startButton) {
+
+                    startButton.disabled =
+                        false;
+
+                }
+
+
+                if (stopButton) {
+
+                    stopButton.disabled =
+                        true;
+
+                }
+
+
+                document.getElementById(
+                    "message"
+                ).innerText =
+                    "⏹ Automatic calling stopped.";
 
             }
 
@@ -1134,16 +1280,6 @@ function connectToRoom(
                     );
 
                 }
-
-
-                /*
-                IMPORTANT:
-
-                NO YELLOW AUTO HIGHLIGHT.
-
-                Player has to find the number
-                on their own ticket.
-                */
 
 
                 document.getElementById(
@@ -1235,6 +1371,19 @@ function connectToRoom(
 
 
                 addChatMessage(
+
+                    data.name,
+
+                    data.message
+
+                );
+
+
+                /*
+                Show popup for incoming chat.
+                */
+
+                showChatPopup(
 
                     data.name,
 
@@ -1506,6 +1655,35 @@ function startGame() {
 
             action:
                 "start"
+
+        })
+
+    );
+
+}
+
+
+
+/* =====================================================
+STOP AUTOMATIC CALLING
+===================================================== */
+
+function stopCalling() {
+
+
+    if (!socket) {
+
+        return;
+
+    }
+
+
+    socket.send(
+
+        JSON.stringify({
+
+            action:
+                "stop_calling"
 
         })
 
@@ -1915,6 +2093,82 @@ function addChatMessage(
 
     container.scrollTop =
         container.scrollHeight;
+
+}
+
+
+
+/* =====================================================
+CHAT POPUP
+===================================================== */
+
+let chatPopupTimer = null;
+
+
+function showChatPopup(
+    name,
+    message
+) {
+
+
+    const popup =
+        document.getElementById(
+            "chatPopup"
+        );
+
+
+    const popupMessage =
+        document.getElementById(
+            "chatPopupMessage"
+        );
+
+
+    popupMessage.innerHTML =
+
+        "<strong>" +
+        escapeHtml(name) +
+        ":</strong> " +
+        escapeHtml(message);
+
+
+    /*
+    Restart animation every time
+    a new message arrives.
+    */
+
+    popup.classList.remove(
+        "show"
+    );
+
+
+    void popup.offsetWidth;
+
+
+    popup.classList.add(
+        "show"
+    );
+
+
+    if (chatPopupTimer) {
+
+        clearTimeout(
+            chatPopupTimer
+        );
+
+    }
+
+
+    chatPopupTimer =
+        setTimeout(
+            function () {
+
+                popup.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
 
 }
 
