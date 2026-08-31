@@ -1943,45 +1943,33 @@ SEND CHAT
 
 function sendChat() {
 
-
     if (!socket) {
-
         return;
-
     }
 
+    if (socket.readyState !== WebSocket.OPEN) {
+
+        alert("Chat is not connected. Please wait a moment.");
+
+        return;
+    }
 
     const input =
-        document.getElementById(
-            "chatInput"
-        );
-
+        document.getElementById("chatInput");
 
     const message =
         input.value.trim();
 
-
     if (!message) {
-
         return;
-
     }
 
-
     socket.send(
-
         JSON.stringify({
-
-            action:
-                "chat",
-
-            message:
-                message
-
+            action: "chat",
+            message: message
         })
-
     );
-
 
     input.value = "";
 
@@ -1993,34 +1981,27 @@ function sendChat() {
 QUICK CHAT
 ===================================================== */
 
-function sendQuickChat(
-    message
-) {
-
+function sendQuickChat(message) {
 
     if (!socket) {
-
         return;
-
     }
 
+    if (socket.readyState !== WebSocket.OPEN) {
+
+        alert("Chat is not connected. Please wait a moment.");
+
+        return;
+    }
 
     socket.send(
-
         JSON.stringify({
-
-            action:
-                "chat",
-
-            message:
-                message
-
+            action: "chat",
+            message: message
         })
-
     );
 
 }
-
 
 
 /* =====================================================
@@ -2102,50 +2083,45 @@ CHAT POPUP
 
 let chatPopupTimer = null;
 
-
 function showChatPopup(
     name,
     message
 ) {
-
 
     const popup =
         document.getElementById(
             "chatPopup"
         );
 
+    const popupTitle =
+        document.getElementById(
+            "chatPopupTitle"
+        );
 
     const popupMessage =
         document.getElementById(
             "chatPopupMessage"
         );
 
+    if (!popup) {
+        return;
+    }
 
-    popupMessage.innerHTML =
+    if (!popupTitle || !popupMessage) {
+        return;
+    }
 
-        "<strong>" +
-        escapeHtml(name) +
-        ":</strong> " +
-        escapeHtml(message);
+    popupTitle.innerText =
+        "💬 " + name;
 
+    popupMessage.innerText =
+        message;
 
-    /*
-    Restart animation every time
-    a new message arrives.
-    */
-
-    popup.classList.remove(
-        "show"
-    );
-
+    popup.classList.remove("show");
 
     void popup.offsetWidth;
 
-
-    popup.classList.add(
-        "show"
-    );
-
+    popup.classList.add("show");
 
     if (chatPopupTimer) {
 
@@ -2154,7 +2130,6 @@ function showChatPopup(
         );
 
     }
-
 
     chatPopupTimer =
         setTimeout(
@@ -2165,11 +2140,9 @@ function showChatPopup(
                 );
 
             },
-            3000
+            4000
         );
-
 }
-
 
 
 /* =====================================================
