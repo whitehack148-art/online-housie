@@ -411,6 +411,16 @@ CONTROLS
 }
 
 
+.stop-button {
+
+    background:
+        #ef4444;
+
+    color: white;
+
+}
+
+
 .call-button {
 
     background:
@@ -964,6 +974,137 @@ CHAT INPUT
 
 
 /* =====================================================
+CHAT POPUP
+===================================================== */
+
+.chat-popup {
+
+    position: fixed;
+
+    top: 25px;
+
+    right: 25px;
+
+    width: 320px;
+
+    max-width: calc(100% - 30px);
+
+    padding: 16px 18px;
+
+    background:
+        rgba(
+            17,
+            24,
+            39,
+            0.96
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.2
+        );
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 15px 40px
+        rgba(
+            0,
+            0,
+            0,
+            0.45
+        );
+
+    z-index: 10000;
+
+    opacity: 0;
+
+    transform:
+        translateX(120%);
+
+    pointer-events: none;
+
+}
+
+
+.chat-popup.show {
+
+    animation:
+        chatPopupShow 3s ease forwards;
+
+}
+
+
+.chat-popup-title {
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    opacity: 0.75;
+
+    margin-bottom: 7px;
+
+}
+
+
+.chat-popup-message {
+
+    font-size: 16px;
+
+    line-height: 1.4;
+
+    word-break: break-word;
+
+}
+
+
+@keyframes chatPopupShow {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translateX(120%);
+
+    }
+
+    10% {
+
+        opacity: 1;
+
+        transform:
+            translateX(0);
+
+    }
+
+    80% {
+
+        opacity: 1;
+
+        transform:
+            translateX(0);
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translateX(120%);
+
+    }
+
+}
+
+
+/* =====================================================
 WINNER POPUP
 ===================================================== */
 
@@ -1169,6 +1310,21 @@ MOBILE
 
         flex-direction:
             column;
+
+    }
+
+
+    .chat-popup {
+
+        top: 15px;
+
+        right: 15px;
+
+        left: 15px;
+
+        width: auto;
+
+        max-width: none;
 
     }
 
