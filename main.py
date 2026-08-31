@@ -570,53 +570,41 @@ async def websocket_endpoint(
                     }
                 )
 
-            # =========================================
-            # CHAT
-            # =========================================
+           # =========================================
+# CHAT
+# =========================================
 
-            elif action == "chat":
+elif action == "chat":
 
-                message = str(
-                    data.get(
-                        "message",
-                        ""
-                    )
-                ).strip()
+    message = str(
+        data.get(
+            "message",
+            ""
+        )
+    ).strip()
 
-                if not message:
+    if not message:
+        continue
 
-                    continue
+    if len(message) > 150:
+        message = message[:150]
 
-                if len(message) > 150:
+    # Send chat to every player in the room
+    # including the sender.
+    await broadcast(
+        room_code,
+        {
+            "type": "chat",
 
-                    message = message[:150]
+            "name": player["name"],
 
-                # IMPORTANT:
-                # Broadcast to EVERY player.
-                #
-                # sender_id tells each browser
-                # who originally sent the message.
+            "message": message,
 
-                await broadcast(
-                    room_code,
-                    {
-
-                        "type":
-                            "chat",
-
-                        "name":
-                            player["name"],
-
-                        "message":
-                            message,
-
-                        # NEW:
-                        "sender_id":
-                            player["player_id"]
-
-                    }
-                )
-
+            # IMPORTANT:
+            # This identifies who actually sent it.
+            "sender": player["name"]
+        }
+    )
             # =========================================
             # CLAIM WIN
             # =========================================
