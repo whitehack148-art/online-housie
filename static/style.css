@@ -378,65 +378,62 @@ input {
 }
 
 
-/* =====================================================
-   TICKET
-===================================================== */
+/* =================================================
+   MOBILE TICKET — FIT FULL SCREEN
+================================================= */
 
-.ticket {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+@media (max-width: 650px) {
+
+    .ticket {
+        width: 100%;
+        overflow-x: hidden;
+        padding-bottom: 0;
+    }
+
+    .ticket-row {
+        width: 100%;
+        min-width: 0;
+        grid-template-columns: repeat(9, minmax(0, 1fr));
+    }
+
+    .ticket-cell {
+        min-width: 0;
+        min-height: 42px;
+        height: 42px;
+        padding: 0;
+        font-size: 12px;
+        border: 1px solid #475569;
+    }
+
+    .number-cell.marked {
+        transform: scale(0.90);
+    }
 }
 
-.ticket-row {
-    display: grid;
-    grid-template-columns:
-        repeat(9, minmax(35px, 1fr));
 
-    width: 100%;
-    min-width: 405px;
-}
+/* =================================================
+   VERY SMALL MOBILE
+================================================= */
 
-.ticket-cell {
-    min-height: 52px;
-    border: 1px solid #475569;
+@media (max-width: 380px) {
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    .ticket {
+        width: 100%;
+        overflow-x: hidden;
+    }
 
-    font-weight: bold;
-    user-select: none;
+    .ticket-row {
+        width: 100%;
+        min-width: 0;
+        grid-template-columns: repeat(9, minmax(0, 1fr));
+    }
 
-    transition:
-        background 0.15s ease,
-        transform 0.15s ease;
-}
+    .ticket-cell {
+        min-height: 36px;
+        height: 36px;
+        font-size: 11px;
+    }
 
-.number-cell {
-    background: #334155;
-    cursor: pointer;
-    touch-action: manipulation;
-}
-
-.number-cell:hover {
-    background: #475569;
-}
-
-.number-cell:active {
-    transform: scale(0.95);
-}
-
-.number-cell.marked {
-    background: #22c55e;
-    color: #ffffff;
-    transform: scale(0.94);
-    border-radius: 6px;
-}
-
-.empty-cell {
-    background: #0f172a;
 }
 
 
