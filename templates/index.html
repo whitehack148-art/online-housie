@@ -1363,11 +1363,34 @@ function connectToRoom(
 
 
 
-            /* =========================================
-            CHAT
-            ========================================= */
+/* =========================================
+CHAT
+========================================= */
 
-data.type === "chat"
+if (
+    data.type === "chat"
+) {
+
+    // Always add message to chat
+    addChatMessage(
+        data.name,
+        data.message
+    );
+
+    // Popup ONLY on other players' devices
+    if (
+        data.sender &&
+        data.sender !== myName
+    ) {
+
+        showChatPopup(
+            data.name,
+            data.message
+        );
+
+    }
+
+}
 
 
             /* =========================================
