@@ -10,10 +10,14 @@ from fastapi.templating import Jinja2Templates
 from game import generate_ticket
 
 
+# =====================================================
+# APPLICATION
+# =====================================================
+
 app = FastAPI(
     title="Online Housie",
     description="Online Multiplayer Housie Game",
-    version="5.0.0"
+    version="6.0.0"
 )
 
 
@@ -41,7 +45,7 @@ rooms = {}
 
 
 # =====================================================
-# GENERATE 6 CHARACTER ROOM CODE
+# ROOM CODE
 # =====================================================
 
 def generate_room_code():
@@ -59,6 +63,20 @@ def generate_room_code():
 
         if code not in rooms:
             return code
+
+
+# =====================================================
+# PLAYER ID
+# =====================================================
+
+def generate_player_id():
+
+    return "".join(
+        random.choices(
+            string.ascii_letters + string.digits,
+            k=16
+        )
+    )
 
 
 # =====================================================
@@ -122,7 +140,7 @@ async def create_room():
 
 
 # =====================================================
-# HEALTH
+# HEALTH CHECK
 # =====================================================
 
 @app.get("/health")
@@ -140,63 +158,168 @@ async def health():
 
 async def automatic_number_caller(room_code):
 
-    while room_code in rooms:
+    try:
 
-        room = rooms[room_code]
+        while room_code in rooms:
 
-        if not room.get(
-            "auto_calling",
-            False
-        ):
+            room = rooms[room_code]
 
-            break
+            if not room.get(
+                "auto_calling",
+                False
+            ):
+                break
 
-        available_numbers = [
+            # -----------------------------------------
+            # GET AVAILABLE NUMBERS
+            # -----------------------------------------
 
-            number
+            available_numbers = [
 
-            for number in range(1, 91)
+                number
 
-            if number not in room["called_numbers"]
+                for number in range(1, 91)
 
-        ]
+                if number not in room["called_numbers"]
 
-        if not available_numbers:
+            ]
 
-            room["auto_calling"] = False
+            # -----------------------------------------
+            # ALL NUMBERS FINISHED
+            # -----------------------------------------
+
+            if not available_numbers:
+
+                room["auto_calling"] = False
+
+                room["auto_call_task"] = None
+
+                await broadcast(
+                    room_code,
+                    {
+                        "type": "game_finished",
+
+                        "message":
+                            "🎉 All 90 numbers have been called!"
+                    }
+                )
+
+                break
+
+            # -----------------------------------------
+            # SELECT NUMBER
+            # -----------------------------------------
+
+            number = random.choice(
+                available_numbers
+            )
+
+            room["called_numbers"].append(
+                number
+            )
+
+            room["current_number"] = number
+
+            # -----------------------------------------
+            # SEND NUMBER
+            # -----------------------------------------
 
             await broadcast(
                 room_code,
                 {
-                    "type": "game_finished"
+
+                    "type":
+                        "number_called",
+
+                    "number":
+                        number,
+
+                    "called_numbers":
+                        room["called_numbers"],
+
+                    "automatic":
+                        True
+
                 }
             )
 
-            break
+            # -----------------------------------------
+            # WAIT 5 SECONDS
+            # -----------------------------------------
 
-        number = random.choice(
-            available_numbers
+            await asyncio.sleep(5)
+
+    except asyncio.CancelledError:
+
+        # Automatic calling was intentionally stopped.
+        pass
+
+    finally:
+
+        if room_code in rooms:
+
+            room = rooms[room_code]
+
+            if room.get("auto_call_task") is asyncio.current_task():
+
+                room["auto_call_task"] = None
+
+
+# =====================================================
+# START AUTOMATIC CALLING
+# =====================================================
+
+async def start_automatic_calling(room_code):
+
+    if room_code not in rooms:
+        return
+
+    room = rooms[room_code]
+
+    # Already running.
+    if room.get("auto_calling"):
+
+        return
+
+    room["auto_calling"] = True
+
+    room["auto_call_task"] = asyncio.create_task(
+        automatic_number_caller(
+            room_code
         )
+    )
 
-        room["called_numbers"].append(
-            number
-        )
 
-        room["current_number"] = number
+# =====================================================
+# STOP AUTOMATIC CALLING
+# =====================================================
 
-        await broadcast(
-            room_code,
-            {
-                "type": "number_called",
+async def stop_automatic_calling(room_code):
 
-                "number": number,
+    if room_code not in rooms:
+        return
 
-                "called_numbers":
-                    room["called_numbers"]
-            }
-        )
+    room = rooms[room_code]
 
-        await asyncio.sleep(5)
+    room["auto_calling"] = False
+
+    task = room.get(
+        "auto_call_task"
+    )
+
+    room["auto_call_task"] = None
+
+    if task and not task.done():
+
+        task.cancel()
+
+        try:
+
+            await task
+
+        except asyncio.CancelledError:
+
+            pass
 
 
 # =====================================================
@@ -221,7 +344,8 @@ async def websocket_endpoint(
 
         await websocket.send_json({
 
-            "type": "error",
+            "type":
+                "error",
 
             "message":
                 "Room does not exist."
@@ -238,9 +362,9 @@ async def websocket_endpoint(
 
     try:
 
-        # =============================================
+        # =================================================
         # RECEIVE PLAYER NAME
-        # =============================================
+        # =================================================
 
         player_data = await websocket.receive_json()
 
@@ -259,9 +383,9 @@ async def websocket_endpoint(
 
             player_name = player_name[:20]
 
-        # =============================================
+        # =================================================
         # CREATE PLAYER
-        # =============================================
+        # =================================================
 
         player = {
 
@@ -277,23 +401,14 @@ async def websocket_endpoint(
             "is_host":
                 False,
 
-            # NEW:
-            # Unique ID for this player.
-            # Used to identify the sender of chat.
             "player_id":
-                "".join(
-                    random.choices(
-                        string.ascii_letters +
-                        string.digits,
-                        k=16
-                    )
-                )
+                generate_player_id()
 
         }
 
-        # =============================================
+        # =================================================
         # FIRST PLAYER = HOST
-        # =============================================
+        # =================================================
 
         if room["host"] is None:
 
@@ -301,11 +416,13 @@ async def websocket_endpoint(
 
             player["is_host"] = True
 
-        room["players"].append(player)
+        room["players"].append(
+            player
+        )
 
-        # =============================================
+        # =================================================
         # SEND JOINED
-        # =============================================
+        # =================================================
 
         await websocket.send_json({
 
@@ -324,15 +441,14 @@ async def websocket_endpoint(
             "ticket":
                 player["ticket"],
 
-            # NEW:
             "player_id":
                 player["player_id"]
 
         })
 
-        # =============================================
+        # =================================================
         # SEND CURRENT GAME STATE
-        # =============================================
+        # =================================================
 
         await websocket.send_json({
 
@@ -341,6 +457,9 @@ async def websocket_endpoint(
 
             "started":
                 room["started"],
+
+            "auto_calling":
+                room["auto_calling"],
 
             "current_number":
                 room["current_number"],
@@ -353,27 +472,29 @@ async def websocket_endpoint(
 
         })
 
-        # =============================================
-        # UPDATE PLAYER LIST
-        # =============================================
+        # =================================================
+        # UPDATE PLAYERS
+        # =================================================
 
         await broadcast_players(
             room_code
         )
 
-        # =============================================
-        # MAIN WEBSOCKET LOOP
-        # =============================================
+        # =================================================
+        # MAIN LOOP
+        # =================================================
 
         while True:
 
             data = await websocket.receive_json()
 
-            action = data.get("action")
+            action = data.get(
+                "action"
+            )
 
-            # =========================================
+            # =================================================
             # START GAME
-            # =========================================
+            # =================================================
 
             if action == "start":
 
@@ -391,76 +512,82 @@ async def websocket_endpoint(
 
                     continue
 
-                # -------------------------------------
-                # GAME ALREADY STARTED
-                # -------------------------------------
+                # -----------------------------------------
+                # ALREADY STARTED
+                # -----------------------------------------
 
                 if room["started"]:
 
-                    if not room.get(
-                        "auto_calling",
-                        False
-                    ):
+                    if not room["auto_calling"]:
 
-                        room["auto_calling"] = True
-
-                        room["auto_call_task"] = (
-                            asyncio.create_task(
-                                automatic_number_caller(
-                                    room_code
-                                )
-                            )
+                        await start_automatic_calling(
+                            room_code
                         )
 
                         await broadcast(
                             room_code,
                             {
+
                                 "type":
                                     "auto_calling_started"
+
                             }
                         )
 
                     continue
 
-                # -------------------------------------
+                # -----------------------------------------
                 # START GAME
-                # -------------------------------------
+                # -----------------------------------------
 
                 room["started"] = True
 
-                room["auto_calling"] = True
+                # Reset winners.
+                room["winners"] = {
+
+                    "early5": None,
+
+                    "row1": None,
+
+                    "row2": None,
+
+                    "row3": None,
+
+                    "fullhouse": None
+
+                }
 
                 await broadcast(
                     room_code,
                     {
+
                         "type":
                             "game_started"
+
                     }
                 )
 
-                # -------------------------------------
-                # START AUTOMATIC CALLING
-                # -------------------------------------
+                # -----------------------------------------
+                # START AUTO CALLING
+                # -----------------------------------------
 
-                room["auto_call_task"] = (
-                    asyncio.create_task(
-                        automatic_number_caller(
-                            room_code
-                        )
-                    )
+                await start_automatic_calling(
+                    room_code
                 )
 
                 await broadcast(
                     room_code,
                     {
+
                         "type":
                             "auto_calling_started"
+
                     }
                 )
 
-            # =========================================
+            # =================================================
             # STOP AUTOMATIC CALLING
-            # =========================================
+            # =================================================
 
             elif action == "stop_calling":
 
@@ -478,29 +605,27 @@ async def websocket_endpoint(
 
                     continue
 
-                room["auto_calling"] = False
+                if not room["started"]:
 
-                task = room.get(
-                    "auto_call_task"
+                    continue
+
+                await stop_automatic_calling(
+                    room_code
                 )
-
-                if task and not task.done():
-
-                    task.cancel()
-
-                room["auto_call_task"] = None
 
                 await broadcast(
                     room_code,
                     {
+
                         "type":
                             "auto_calling_stopped"
+
                     }
                 )
 
-            # =========================================
-            # CALL NUMBER
-            # =========================================
+            # =================================================
+            # CALL NEXT NUMBER MANUALLY
+            # =================================================
 
             elif action == "call_number":
 
@@ -520,6 +645,33 @@ async def websocket_endpoint(
 
                 if not room["started"]:
 
+                    await websocket.send_json({
+
+                        "type":
+                            "error",
+
+                        "message":
+                            "Start the game first."
+
+                    })
+
+                    continue
+
+                # Manual calling is only allowed
+                # while automatic calling is stopped.
+
+                if room["auto_calling"]:
+
+                    await websocket.send_json({
+
+                        "type":
+                            "error",
+
+                        "message":
+                            "Stop automatic calling before calling a number manually."
+
+                    })
+
                     continue
 
                 available_numbers = [
@@ -537,8 +689,13 @@ async def websocket_endpoint(
                     await broadcast(
                         room_code,
                         {
+
                             "type":
-                                "game_finished"
+                                "game_finished",
+
+                            "message":
+                                "🎉 All 90 numbers have been called!"
+
                         }
                     )
 
@@ -565,49 +722,61 @@ async def websocket_endpoint(
                             number,
 
                         "called_numbers":
-                            room["called_numbers"]
+                            room["called_numbers"],
+
+                        "automatic":
+                            False
 
                     }
                 )
 
-           # =========================================
-# CHAT
-# =========================================
+            # =================================================
+            # CHAT
+            # =================================================
 
-elif action == "chat":
+            elif action == "chat":
 
-    message = str(
-        data.get(
-            "message",
-            ""
-        )
-    ).strip()
+                message = str(
+                    data.get(
+                        "message",
+                        ""
+                    )
+                ).strip()
 
-    if not message:
-        continue
+                if not message:
 
-    if len(message) > 150:
-        message = message[:150]
+                    continue
 
-    # Send chat to every player in the room
-    # including the sender.
-    await broadcast(
-        room_code,
-        {
-            "type": "chat",
+                if len(message) > 150:
 
-            "name": player["name"],
+                    message = message[:150]
 
-            "message": message,
+                # -----------------------------------------
+                # SEND TO EVERY PLAYER
+                # -----------------------------------------
 
-            # IMPORTANT:
-            # This identifies who actually sent it.
-            "sender": player["name"]
-        }
-    )
-            # =========================================
+                await broadcast(
+                    room_code,
+                    {
+
+                        "type":
+                            "chat",
+
+                        "name":
+                            player["name"],
+
+                        "message":
+                            message,
+
+                        "sender":
+                            player["player_id"]
+
+                    }
+                )
+
+            # =================================================
             # CLAIM WIN
-            # =========================================
+            # =================================================
 
             elif action == "claim_win":
 
@@ -619,6 +788,10 @@ elif action == "chat":
                     "marked_numbers",
                     []
                 )
+
+                # -----------------------------------------
+                # CHECK ALREADY WON
+                # -----------------------------------------
 
                 if room["winners"].get(
                     win_type
@@ -635,6 +808,10 @@ elif action == "chat":
                     })
 
                     continue
+
+                # -----------------------------------------
+                # VALIDATE
+                # -----------------------------------------
 
                 result = validate_win(
 
@@ -688,36 +865,31 @@ elif action == "chat":
 
                     })
 
-    # =================================================
+    # =====================================================
     # PLAYER DISCONNECTED
-    # =================================================
+    # =====================================================
 
     except WebSocketDisconnect:
 
         if player and player in room["players"]:
 
-            room["players"].remove(player)
+            room["players"].remove(
+                player
+            )
 
-        # =============================================
-        # HOST TRANSFER
-        # =============================================
+        # =================================================
+        # HOST DISCONNECTED
+        # =================================================
 
         if player == room["host"]:
 
-            room["auto_calling"] = False
-
-            task = room.get(
-                "auto_call_task"
+            await stop_automatic_calling(
+                room_code
             )
-
-            if task and not task.done():
-
-                task.cancel()
-
-            room["auto_call_task"] = None
 
             if room["players"]:
 
+                # Transfer host.
                 room["host"] = room["players"][0]
 
                 room["host"]["is_host"] = True
@@ -737,13 +909,22 @@ elif action == "chat":
 
             else:
 
-                del rooms[room_code]
+                # No players left.
+                if room_code in rooms:
+
+                    del rooms[room_code]
 
                 return
 
-        await broadcast_players(
-            room_code
-        )
+        # =================================================
+        # UPDATE PLAYER LIST
+        # =================================================
+
+        if room_code in rooms:
+
+            await broadcast_players(
+                room_code
+            )
 
 
 # =====================================================
@@ -758,7 +939,7 @@ def validate_win(
 ):
 
     # =================================================
-    # GAME START CHECK
+    # GAME START
     # =================================================
 
     if not room["started"]:
@@ -830,7 +1011,7 @@ def validate_win(
         }
 
     # =================================================
-    # GET ALL TICKET NUMBERS
+    # GET TICKET NUMBERS
     # =================================================
 
     ticket_numbers = []
@@ -933,11 +1114,14 @@ def validate_win(
 
         row_index = {
 
-            "row1": 0,
+            "row1":
+                0,
 
-            "row2": 1,
+            "row2":
+                1,
 
-            "row3": 2
+            "row3":
+                2
 
         }[win_type]
 
@@ -1092,17 +1276,21 @@ async def broadcast(
 
     disconnected = []
 
-    # IMPORTANT:
-    # Send the SAME message to every connected
-    # player in this room.
+    # -----------------------------------------------
+    # SEND TO ALL PLAYERS
+    # -----------------------------------------------
 
-    for player in list(room["players"]):
+    for player in list(
+        room["players"]
+    ):
 
         try:
 
             await player[
                 "websocket"
-            ].send_json(message)
+            ].send_json(
+                message
+            )
 
         except Exception:
 
@@ -1110,7 +1298,9 @@ async def broadcast(
                 player
             )
 
-    # Remove disconnected players
+    # -----------------------------------------------
+    # REMOVE DEAD CONNECTIONS
+    # -----------------------------------------------
 
     for player in disconnected:
 
@@ -1119,3 +1309,19 @@ async def broadcast(
             room["players"].remove(
                 player
             )
+
+    # -----------------------------------------------
+    # HANDLE EMPTY ROOM
+    # -----------------------------------------------
+
+    if not room["players"]:
+
+        if room_code in rooms:
+
+            await stop_automatic_calling(
+                room_code
+            )
+
+            del rooms[room_code]
+
+        return
