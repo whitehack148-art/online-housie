@@ -11,6 +11,11 @@
     content="width=device-width, initial-scale=1.0"
 >
 
+<meta
+    name="theme-color"
+    content="#0f172a"
+>
+
 <title>Online Housie</title>
 
 <link
@@ -42,7 +47,6 @@ TITLE
 </div>
 
 
-
 <!-- =====================================================
 LOGIN
 ===================================================== -->
@@ -52,8 +56,9 @@ LOGIN
     class="login-card"
 >
 
-
-<h2>👤 Enter Your Name</h2>
+<h2>
+    👤 Enter Your Name
+</h2>
 
 
 <input
@@ -69,16 +74,12 @@ LOGIN
     class="primary-button"
     onclick="createRoom()"
 >
-
-🏠 CREATE ROOM
-
+    🏠 CREATE ROOM
 </button>
 
 
 <div class="or">
-
-OR
-
+    OR
 </div>
 
 
@@ -97,9 +98,7 @@ OR
     class="secondary-button"
     onclick="joinRoom()"
 >
-
-🚪 JOIN ROOM
-
+    🚪 JOIN ROOM
 </button>
 
 
@@ -110,7 +109,6 @@ OR
 
 
 </div>
-
 
 
 <!-- =====================================================
@@ -132,13 +130,15 @@ TOP BAR
 
 <div>
 
-<strong>ROOM</strong>
+<strong>
+    ROOM
+</strong>
 
 <div
     id="roomDisplay"
     class="room-display"
 >
--
+    -
 </div>
 
 </div>
@@ -146,13 +146,15 @@ TOP BAR
 
 <div>
 
-<strong>PLAYERS</strong>
+<strong>
+    PLAYERS
+</strong>
 
 <div
     id="playerCount"
     class="player-count"
 >
-0
+    0
 </div>
 
 </div>
@@ -168,7 +170,6 @@ TOP BAR
 </div>
 
 
-
 <!-- =====================================================
 GAME LAYOUT
 ===================================================== -->
@@ -176,39 +177,33 @@ GAME LAYOUT
 <div class="game-layout">
 
 
-
 <!-- =====================================================
-LEFT
+LEFT COLUMN
 ===================================================== -->
 
 <div class="left-column">
-
 
 
 <!-- CURRENT NUMBER -->
 
 <div class="number-card">
 
-
 <div class="small-title">
-
-CURRENT NUMBER
-
+    CURRENT NUMBER
 </div>
-
 
 <div
     id="currentNumber"
 >
--
+    -
+</div>
+
 </div>
 
 
-</div>
-
-
-
-<!-- HOST CONTROLS -->
+<!-- =====================================================
+HOST CONTROLS
+===================================================== -->
 
 <div
     id="hostControls"
@@ -222,9 +217,7 @@ CURRENT NUMBER
     class="start-button"
     onclick="startGame()"
 >
-
-▶ START GAME
-
+    ▶ START AUTO
 </button>
 
 
@@ -234,9 +227,7 @@ CURRENT NUMBER
     onclick="stopCalling()"
     disabled
 >
-
-⏹ STOP CALLING
-
+    ⏹ STOP AUTO
 </button>
 
 
@@ -246,25 +237,21 @@ CURRENT NUMBER
     onclick="callNumber()"
     disabled
 >
-
-📢 CALL NEXT NUMBER
-
+    📢 CALL NEXT
 </button>
 
 
 </div>
 
 
+<!-- GAME MESSAGE -->
 
 <div
     id="message"
     class="game-message"
 >
-
-Waiting for host...
-
+    Waiting for host...
 </div>
-
 
 
 <!-- =====================================================
@@ -273,27 +260,22 @@ TICKET
 
 <div class="ticket-area">
 
-
 <h2>
-🎟️ YOUR TICKET
+    🎟️ YOUR TICKET
 </h2>
 
-
 <p class="hint">
-
-Find the called number yourself and click it.
-
+    Find the called number and click it.
 </p>
 
 
 <div
     id="ticket"
     class="ticket"
-></div>
-
-
+>
 </div>
 
+</div>
 
 
 <!-- =====================================================
@@ -302,16 +284,12 @@ NUMBER BOARD
 
 <div class="ticket-area">
 
-
 <h2>
-🔢 NUMBER BOARD
+    🔢 NUMBER BOARD
 </h2>
 
-
 <p class="hint">
-
-🔴 Red = Number already called
-
+    🔴 Red = Number already called
 </p>
 
 
@@ -319,7 +297,6 @@ NUMBER BOARD
     id="numberBoard"
     class="number-board"
 >
-
 
 <script>
 
@@ -344,23 +321,19 @@ for (
 
 </script>
 
+</div>
 
 </div>
 
 
 </div>
-
-
-</div>
-
 
 
 <!-- =====================================================
-RIGHT
+RIGHT COLUMN
 ===================================================== -->
 
 <div class="right-column">
-
 
 
 <!-- =====================================================
@@ -369,16 +342,12 @@ WINNING OPTIONS
 
 <div class="winning-area">
 
-
 <h2>
-🏆 WINNING OPTIONS
+    🏆 WINNING OPTIONS
 </h2>
 
-
 <p class="hint">
-
-Complete the pattern and claim your prize.
-
+    Complete the pattern and claim your prize.
 </p>
 
 
@@ -387,9 +356,7 @@ Complete the pattern and claim your prize.
     class="win-button"
     onclick="claimWin('early5')"
 >
-
-⭐ EARLY 5
-
+    ⭐ EARLY 5
 </button>
 
 
@@ -398,9 +365,7 @@ Complete the pattern and claim your prize.
     class="win-button"
     onclick="claimWin('row1')"
 >
-
-🥇 FIRST ROW
-
+    🥇 FIRST ROW
 </button>
 
 
@@ -409,9 +374,7 @@ Complete the pattern and claim your prize.
     class="win-button"
     onclick="claimWin('row2')"
 >
-
-🥈 SECOND ROW
-
+    🥈 SECOND ROW
 </button>
 
 
@@ -420,9 +383,7 @@ Complete the pattern and claim your prize.
     class="win-button"
     onclick="claimWin('row3')"
 >
-
-🥉 THIRD ROW
-
+    🥉 THIRD ROW
 </button>
 
 
@@ -431,9 +392,7 @@ Complete the pattern and claim your prize.
     class="win-button full-house"
     onclick="claimWin('fullhouse')"
 >
-
-🏆 FULL HOUSIE
-
+    🏆 FULL HOUSIE
 </button>
 
 
@@ -447,16 +406,14 @@ Complete the pattern and claim your prize.
 </div>
 
 
-
 <!-- =====================================================
 CHAT
 ===================================================== -->
 
 <div class="chat-area">
 
-
 <h2>
-💬 CHAT
+    💬 CHAT
 </h2>
 
 
@@ -467,141 +424,94 @@ CHAT
 </div>
 
 
-
 <h3>
-Quick Messages
+    Quick Messages
 </h3>
 
 
 <div class="quick-chat">
 
-
 <button onclick="sendQuickChat('👋 Hi!')">
-👋 Hi!
+    👋 Hi!
 </button>
-
 
 <button onclick="sendQuickChat('😂 LOL')">
-😂 LOL
+    😂 LOL
 </button>
-
 
 <button onclick="sendQuickChat('🎉 Nice!')">
-🎉 Nice!
+    🎉 Nice!
 </button>
-
 
 <button onclick="sendQuickChat('🔥 Good game!')">
-🔥 Good game!
+    🔥 Good game!
 </button>
-
 
 <button onclick="sendQuickChat('👏 Well played!')">
-👏 Well played!
+    👏 Well played!
 </button>
-
 
 <button onclick="sendQuickChat('😎 Let’s go!')">
-😎 Let's go!
+    😎 Let's go!
 </button>
-
 
 <button onclick="sendQuickChat('👍 Good luck!')">
-👍 Good luck!
+    👍 Good luck!
 </button>
-
 
 <button onclick="sendQuickChat('🎊 Congratulations!')">
-🎊 Congratulations!
+    🎊 Congratulations!
 </button>
-
 
 </div>
 
 
-
 <h3>
-Emojis
+    Emojis
 </h3>
 
 
 <div class="emoji-buttons">
 
+<button onclick="addEmoji('😀')">😀</button>
 
-<button onclick="addEmoji('😀')">
-😀
-</button>
+<button onclick="addEmoji('😂')">😂</button>
 
+<button onclick="addEmoji('😍')">😍</button>
 
-<button onclick="addEmoji('😂')">
-😂
-</button>
+<button onclick="addEmoji('😎')">😎</button>
 
+<button onclick="addEmoji('🔥')">🔥</button>
 
-<button onclick="addEmoji('😍')">
-😍
-</button>
+<button onclick="addEmoji('🎉')">🎉</button>
 
+<button onclick="addEmoji('👏')">👏</button>
 
-<button onclick="addEmoji('😎')">
-😎
-</button>
+<button onclick="addEmoji('👍')">👍</button>
 
+<button onclick="addEmoji('❤️')">❤️</button>
 
-<button onclick="addEmoji('🔥')">
-🔥
-</button>
-
-
-<button onclick="addEmoji('🎉')">
-🎉
-</button>
-
-
-<button onclick="addEmoji('👏')">
-👏
-</button>
-
-
-<button onclick="addEmoji('👍')">
-👍
-</button>
-
-
-<button onclick="addEmoji('❤️')">
-❤️
-</button>
-
-
-<button onclick="addEmoji('🤣')">
-🤣
-</button>
-
+<button onclick="addEmoji('🤣')">🤣</button>
 
 </div>
 
 
-
 <div class="chat-input">
-
 
 <input
     id="chatInput"
     type="text"
     maxlength="150"
+    autocomplete="off"
     placeholder="Write a message..."
 >
-
 
 <button
     onclick="sendChat()"
 >
-
-SEND
-
+    SEND
 </button>
 
-
 </div>
 
 
@@ -618,7 +528,6 @@ SEND
 
 
 </div>
-
 
 
 <!-- =====================================================
@@ -634,7 +543,7 @@ CHAT POPUP
     id="chatPopupTitle"
     class="chat-popup-title"
 >
-💬 NEW MESSAGE
+    💬 NEW MESSAGE
 </div>
 
 <div
@@ -646,7 +555,6 @@ CHAT POPUP
 </div>
 
 
-
 <!-- =====================================================
 WINNER POPUP
 ===================================================== -->
@@ -656,30 +564,20 @@ WINNER POPUP
     class="win-notification"
 >
 
-
 <div class="confetti">
-
-🎉 🎊 🥳 🎊 🎉
-
+    🎉 🎊 🥳 🎊 🎉
 </div>
-
 
 <div id="winText">
-
 </div>
-
 
 <button
     onclick="closeWinner()"
 >
-
-OK
-
+    OK
 </button>
 
-
 </div>
-
 
 
 <!-- =====================================================
@@ -689,6 +587,10 @@ JAVASCRIPT
 <script>
 
 
+/* =====================================================
+GLOBAL VARIABLES
+===================================================== */
+
 let socket = null;
 
 let currentRoom = "";
@@ -697,8 +599,9 @@ let myTicket = [];
 
 let myName = "";
 
-// Unique ID assigned by the server
 let myPlayerId = "";
+
+let chatPopupTimer = null;
 
 
 /* =====================================================
@@ -728,13 +631,71 @@ roomCodeInput.addEventListener(
 );
 
 
+/* =====================================================
+ENTER KEY
+===================================================== */
+
+document
+    .getElementById("playerName")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                createRoom();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("roomCode")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                joinRoom();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("chatInput")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                sendChat();
+
+            }
+
+        }
+    );
+
 
 /* =====================================================
 CREATE ROOM
 ===================================================== */
 
 async function createRoom() {
-
 
     const name =
         document.getElementById(
@@ -757,7 +718,6 @@ async function createRoom() {
 
 
     try {
-
 
         const response =
             await fetch(
@@ -787,7 +747,8 @@ async function createRoom() {
 
         document.getElementById(
             "roomCode"
-        ).value = code;
+        ).value =
+            code;
 
 
         document.getElementById(
@@ -798,7 +759,7 @@ async function createRoom() {
 
             "<span class='room-code'>" +
 
-            code +
+            escapeHtml(code) +
 
             "</span><br>" +
 
@@ -814,9 +775,7 @@ async function createRoom() {
     }
     catch (error) {
 
-
         console.error(error);
-
 
         alert(
             "Could not create room. " +
@@ -828,13 +787,11 @@ async function createRoom() {
 }
 
 
-
 /* =====================================================
 JOIN ROOM
 ===================================================== */
 
 function joinRoom() {
-
 
     const name =
         document.getElementById(
@@ -860,7 +817,8 @@ function joinRoom() {
 
     document.getElementById(
         "roomCode"
-    ).value = code;
+    ).value =
+        code;
 
 
     if (!name) {
@@ -896,16 +854,14 @@ function joinRoom() {
 }
 
 
-
 /* =====================================================
-CONNECT
+CONNECT TO ROOM
 ===================================================== */
 
 function connectToRoom(
     code,
     name
 ) {
-
 
     currentRoom = code;
 
@@ -923,14 +879,13 @@ function connectToRoom(
             "//" +
             location.host +
             "/ws/" +
-            code
+            encodeURIComponent(code)
 
         );
 
 
     socket.onopen =
-        function () {
-
+        function() {
 
             socket.send(
 
@@ -946,10 +901,8 @@ function connectToRoom(
         };
 
 
-
     socket.onmessage =
-        function (event) {
-
+        function(event) {
 
             const data =
                 JSON.parse(
@@ -958,7 +911,7 @@ function connectToRoom(
 
 
             /* =========================================
-            ERROR
+               ERROR
             ========================================= */
 
             if (
@@ -974,15 +927,13 @@ function connectToRoom(
             }
 
 
-
             /* =========================================
-            JOINED
+               JOINED
             ========================================= */
 
             if (
                 data.type === "joined"
             ) {
-
 
                 document.getElementById(
                     "loginSection"
@@ -1006,18 +957,23 @@ function connectToRoom(
                     data.ticket;
 
 
+                myPlayerId =
+                    data.player_id;
+
+
                 displayTicket(
                     myTicket
                 );
 
 
-                if (data.is_host) {
+                resetWinnerButtons();
 
 
-                    document.getElementById(
-                        "hostControls"
-                    ).style.display =
-                        "block";
+                if (
+                    data.is_host
+                ) {
+
+                    showHostControls();
 
 
                     document.getElementById(
@@ -1027,6 +983,8 @@ function connectToRoom(
 
                 }
                 else {
+
+                    hideHostControls();
 
 
                     document.getElementById(
@@ -1039,15 +997,13 @@ function connectToRoom(
             }
 
 
-
             /* =========================================
-            PLAYERS
+               PLAYERS
             ========================================= */
 
             if (
                 data.type === "players"
             ) {
-
 
                 const players =
                     data.players;
@@ -1064,7 +1020,6 @@ function connectToRoom(
 
                 players.forEach(
                     function(player) {
-
 
                         html +=
 
@@ -1093,9 +1048,8 @@ function connectToRoom(
             }
 
 
-
             /* =========================================
-            GAME STARTED
+               GAME STARTED
             ========================================= */
 
             if (
@@ -1103,48 +1057,7 @@ function connectToRoom(
                 "game_started"
             ) {
 
-
-                const startButton =
-                    document.getElementById(
-                        "startButton"
-                    );
-
-
-                const stopButton =
-                    document.getElementById(
-                        "stopButton"
-                    );
-
-
-                const callButton =
-                    document.getElementById(
-                        "callButton"
-                    );
-
-
-                if (startButton) {
-
-                    startButton.disabled =
-                        true;
-
-                }
-
-
-                if (stopButton) {
-
-                    stopButton.disabled =
-                        false;
-
-                }
-
-
-                if (callButton) {
-
-                    callButton.disabled =
-                        false;
-
-                }
-
+                setGameStarted();
 
                 document.getElementById(
                     "message"
@@ -1154,9 +1067,8 @@ function connectToRoom(
             }
 
 
-
             /* =========================================
-            AUTOMATIC CALLING STARTED
+               AUTO CALLING STARTED
             ========================================= */
 
             if (
@@ -1164,34 +1076,7 @@ function connectToRoom(
                 "auto_calling_started"
             ) {
 
-
-                const startButton =
-                    document.getElementById(
-                        "startButton"
-                    );
-
-
-                const stopButton =
-                    document.getElementById(
-                        "stopButton"
-                    );
-
-
-                if (startButton) {
-
-                    startButton.disabled =
-                        true;
-
-                }
-
-
-                if (stopButton) {
-
-                    stopButton.disabled =
-                        false;
-
-                }
-
+                setAutoCallingStarted();
 
                 document.getElementById(
                     "message"
@@ -1201,9 +1086,8 @@ function connectToRoom(
             }
 
 
-
             /* =========================================
-            AUTOMATIC CALLING STOPPED
+               AUTO CALLING STOPPED
             ========================================= */
 
             if (
@@ -1211,53 +1095,24 @@ function connectToRoom(
                 "auto_calling_stopped"
             ) {
 
-
-                const startButton =
-                    document.getElementById(
-                        "startButton"
-                    );
-
-
-                const stopButton =
-                    document.getElementById(
-                        "stopButton"
-                    );
-
-
-                if (startButton) {
-
-                    startButton.disabled =
-                        false;
-
-                }
-
-
-                if (stopButton) {
-
-                    stopButton.disabled =
-                        true;
-
-                }
-
+                setAutoCallingStopped();
 
                 document.getElementById(
                     "message"
                 ).innerText =
-                    "⏹ Automatic calling stopped.";
+                    "⏹ Automatic calling stopped. Manual calling available.";
 
             }
 
 
-
             /* =========================================
-            NUMBER CALLED
+               NUMBER CALLED
             ========================================= */
 
             if (
                 data.type ===
                 "number_called"
             ) {
-
 
                 const number =
                     data.number;
@@ -1271,7 +1126,8 @@ function connectToRoom(
 
                 const boardNumber =
                     document.getElementById(
-                        "number-" + number
+                        "number-" +
+                        number
                     );
 
 
@@ -1295,9 +1151,8 @@ function connectToRoom(
             }
 
 
-
             /* =========================================
-            GAME STATE
+               GAME STATE
             ========================================= */
 
             if (
@@ -1305,15 +1160,12 @@ function connectToRoom(
                 "game_state"
             ) {
 
-
                 if (
                     data.called_numbers
                 ) {
 
-
                     data.called_numbers.forEach(
                         function(number) {
-
 
                             const boardNumber =
                                 document.getElementById(
@@ -1337,9 +1189,9 @@ function connectToRoom(
 
 
                 if (
-                    data.current_number
+                    data.current_number !== null &&
+                    data.current_number !== undefined
                 ) {
-
 
                     document.getElementById(
                         "currentNumber"
@@ -1359,49 +1211,78 @@ function connectToRoom(
 
                 }
 
+
+                if (
+                    data.started
+                ) {
+
+                    setGameStarted();
+
+                }
+
+
+                if (
+                    data.auto_calling
+                ) {
+
+                    setAutoCallingStarted();
+
+                }
+                else if (
+                    data.started
+                ) {
+
+                    setAutoCallingStopped();
+
+                }
+
             }
 
 
+            /* =========================================
+               CHAT
+            ========================================= */
 
-/* =========================================
-CHAT
-========================================= */
+            if (
+                data.type === "chat"
+            ) {
 
-if (
-    data.type === "chat"
-) {
+                addChatMessage(
+                    data.name,
+                    data.message
+                );
 
-    // Always add message to chat
-    addChatMessage(
-        data.name,
-        data.message
-    );
 
-    // Popup ONLY on other players' devices
-    if (
-        data.sender &&
-        data.sender !== myName
-    ) {
+                /*
+                 * IMPORTANT:
+                 *
+                 * Popup appears only if sender
+                 * is another player.
+                 */
 
-        showChatPopup(
-            data.name,
-            data.message
-        );
+                if (
+                    data.sender &&
+                    data.sender !== myPlayerId
+                ) {
 
-    }
+                    showChatPopup(
+                        data.name,
+                        data.message
+                    );
 
-}
+                }
+
+            }
 
 
             /* =========================================
-            WIN CLAIMED
+               WIN CLAIMED
             ========================================= */
 
             if (
                 data.type ===
                 "win_claimed"
             ) {
-
 
                 handleWin(
                     data
@@ -1410,16 +1291,14 @@ if (
             }
 
 
-
             /* =========================================
-            WIN ERROR
+               WIN ERROR
             ========================================= */
 
             if (
                 data.type ===
                 "win_error"
             ) {
-
 
                 alert(
                     "❌ " +
@@ -1429,16 +1308,14 @@ if (
             }
 
 
-
             /* =========================================
-            HOST CHANGED
+               HOST CHANGED
             ========================================= */
 
             if (
                 data.type ===
                 "host_changed"
             ) {
-
 
                 document.getElementById(
                     "message"
@@ -1448,34 +1325,270 @@ if (
                     data.name +
                     " is now the host.";
 
+
+                /*
+                 * Reloading the page is not necessary.
+                 *
+                 * The player list will tell us who
+                 * the host is.
+                 *
+                 * The server allows the new host
+                 * to use host actions.
+                 */
+
+                updateHostFromPlayerList(
+                    data.name
+                );
+
+            }
+
+
+            /* =========================================
+               GAME FINISHED
+            ========================================= */
+
+            if (
+                data.type ===
+                "game_finished"
+            ) {
+
+                setAutoCallingStopped();
+
+                document.getElementById(
+                    "message"
+                ).innerText =
+                    data.message ||
+                    "🎉 Game finished!";
+
             }
 
         };
 
 
-
     socket.onerror =
-        function () {
+        function(error) {
 
             console.error(
-                "WebSocket error"
+                "WebSocket error:",
+                error
             );
 
         };
 
 
-
     socket.onclose =
-        function () {
+        function() {
 
             console.log(
                 "Disconnected from room."
             );
 
+            /*
+             * Don't immediately show an alert.
+             * Browser/mobile networks can temporarily
+             * interrupt WebSocket connections.
+             */
+
         };
 
 }
 
+
+/* =====================================================
+HOST CONTROL HELPERS
+===================================================== */
+
+function showHostControls() {
+
+    document.getElementById(
+        "hostControls"
+    ).style.display =
+        "grid";
+
+}
+
+
+function hideHostControls() {
+
+    document.getElementById(
+        "hostControls"
+    ).style.display =
+        "none";
+
+}
+
+
+function setGameStarted() {
+
+    const startButton =
+        document.getElementById(
+            "startButton"
+        );
+
+    const stopButton =
+        document.getElementById(
+            "stopButton"
+        );
+
+    const callButton =
+        document.getElementById(
+            "callButton"
+        );
+
+
+    if (startButton) {
+
+        startButton.disabled =
+            true;
+
+    }
+
+
+    if (stopButton) {
+
+        stopButton.disabled =
+            false;
+
+    }
+
+
+    if (callButton) {
+
+        callButton.disabled =
+            true;
+
+    }
+
+}
+
+
+function setAutoCallingStarted() {
+
+    const startButton =
+        document.getElementById(
+            "startButton"
+        );
+
+    const stopButton =
+        document.getElementById(
+            "stopButton"
+        );
+
+    const callButton =
+        document.getElementById(
+            "callButton"
+        );
+
+
+    if (startButton) {
+
+        startButton.disabled =
+            true;
+
+    }
+
+
+    if (stopButton) {
+
+        stopButton.disabled =
+            false;
+
+    }
+
+
+    /*
+     * Manual call is disabled
+     * while automatic calling is active.
+     */
+
+    if (callButton) {
+
+        callButton.disabled =
+            true;
+
+    }
+
+}
+
+
+function setAutoCallingStopped() {
+
+    const startButton =
+        document.getElementById(
+            "startButton"
+        );
+
+    const stopButton =
+        document.getElementById(
+            "stopButton"
+        );
+
+    const callButton =
+        document.getElementById(
+            "callButton"
+        );
+
+
+    if (startButton) {
+
+        startButton.disabled =
+            false;
+
+    }
+
+
+    if (stopButton) {
+
+        stopButton.disabled =
+            true;
+
+    }
+
+
+    /*
+     * Manual call becomes available
+     * after automatic calling stops.
+     */
+
+    if (callButton) {
+
+        callButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/* =====================================================
+UPDATE HOST
+===================================================== */
+
+function updateHostFromPlayerList(
+    hostName
+) {
+
+    if (
+        hostName === myName
+    ) {
+
+        showHostControls();
+
+        /*
+         * New host can start automatic
+         * calling again.
+         */
+
+        setAutoCallingStopped();
+
+    }
+    else {
+
+        hideHostControls();
+
+    }
+
+}
 
 
 /* =====================================================
@@ -1485,7 +1598,6 @@ DISPLAY TICKET
 function displayTicket(
     ticket
 ) {
-
 
     const container =
         document.getElementById(
@@ -1499,7 +1611,6 @@ function displayTicket(
     ticket.forEach(
         function(row) {
 
-
             const rowDiv =
                 document.createElement(
                     "div"
@@ -1512,7 +1623,6 @@ function displayTicket(
 
             row.forEach(
                 function(number) {
-
 
                     const cell =
                         document.createElement(
@@ -1529,7 +1639,6 @@ function displayTicket(
                         number !== undefined
                     ) {
 
-
                         cell.classList.add(
                             "number-cell"
                         );
@@ -1544,7 +1653,7 @@ function displayTicket(
 
 
                         cell.onclick =
-                            function () {
+                            function() {
 
                                 markNumber(
                                     cell
@@ -1554,7 +1663,6 @@ function displayTicket(
 
                     }
                     else {
-
 
                         cell.classList.add(
                             "empty-cell"
@@ -1581,7 +1689,6 @@ function displayTicket(
 }
 
 
-
 /* =====================================================
 MARK NUMBER
 ===================================================== */
@@ -1589,7 +1696,6 @@ MARK NUMBER
 function markNumber(
     cell
 ) {
-
 
     const number =
         parseInt(
@@ -1599,13 +1705,14 @@ function markNumber(
 
     const boardNumber =
         document.getElementById(
-            "number-" + number
+            "number-" +
+            number
         );
 
 
     /*
-    Number must have been called.
-    */
+     * Number must be called first.
+     */
 
     if (
         !boardNumber ||
@@ -1614,11 +1721,9 @@ function markNumber(
         )
     ) {
 
-
         alert(
             "📢 This number has not been called yet."
         );
-
 
         return;
 
@@ -1632,15 +1737,25 @@ function markNumber(
 }
 
 
-
 /* =====================================================
 START GAME
 ===================================================== */
 
 function startGame() {
 
-
     if (!socket) {
+        return;
+    }
+
+
+    if (
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
+
+        alert(
+            "Connection is not ready."
+        );
 
         return;
 
@@ -1661,15 +1776,21 @@ function startGame() {
 }
 
 
-
 /* =====================================================
 STOP AUTOMATIC CALLING
 ===================================================== */
 
 function stopCalling() {
 
-
     if (!socket) {
+        return;
+    }
+
+
+    if (
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
 
         return;
 
@@ -1690,15 +1811,21 @@ function stopCalling() {
 }
 
 
-
 /* =====================================================
 CALL NUMBER
 ===================================================== */
 
 function callNumber() {
 
-
     if (!socket) {
+        return;
+    }
+
+
+    if (
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
 
         return;
 
@@ -1719,7 +1846,6 @@ function callNumber() {
 }
 
 
-
 /* =====================================================
 CLAIM WIN
 ===================================================== */
@@ -1728,8 +1854,19 @@ function claimWin(
     winType
 ) {
 
-
     if (!socket) {
+        return;
+    }
+
+
+    if (
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
+
+        alert(
+            "Connection is not ready."
+        );
 
         return;
 
@@ -1747,7 +1884,6 @@ function claimWin(
 
     markedCells.forEach(
         function(cell) {
-
 
             markedNumbers.push(
 
@@ -1781,7 +1917,6 @@ function claimWin(
 }
 
 
-
 /* =====================================================
 WIN HANDLER
 ===================================================== */
@@ -1789,7 +1924,6 @@ WIN HANDLER
 function handleWin(
     data
 ) {
-
 
     const notification =
         document.getElementById(
@@ -1819,8 +1953,8 @@ function handleWin(
 
 
     /*
-    Winner list
-    */
+     * Clear old winner list.
+     */
 
     const winnerList =
         document.getElementById(
@@ -1828,27 +1962,74 @@ function handleWin(
         );
 
 
-    const item =
-        document.createElement(
-            "div"
-        );
+    winnerList.innerHTML = "";
 
 
-    item.className =
-        "winner-item";
+    /*
+     * Show all claimed winners.
+     */
+
+    const winnerLabels = {
+
+        early5:
+            "⭐ Early 5",
+
+        row1:
+            "🥇 First Row",
+
+        row2:
+            "🥈 Second Row",
+
+        row3:
+            "🥉 Third Row",
+
+        fullhouse:
+            "🏆 Full Housie"
+
+    };
 
 
-    item.innerText =
-        "🏆 " +
-        data.message;
+    Object.keys(
+        data.winners || {}
+    ).forEach(
+        function(type) {
+
+            const winner =
+                data.winners[type];
 
 
-    winnerList.appendChild(
-        item
+            if (!winner) {
+                return;
+            }
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "winner-item";
+
+
+            item.innerText =
+
+                winnerLabels[type] +
+
+                " — " +
+
+                winner;
+
+
+            winnerList.appendChild(
+                item
+            );
+
+        }
     );
 
 }
-
 
 
 /* =====================================================
@@ -1858,7 +2039,6 @@ UPDATE WINNER BUTTONS
 function updateWinnerButtons(
     winners
 ) {
-
 
     const mapping = {
 
@@ -1880,9 +2060,28 @@ function updateWinnerButtons(
     };
 
 
+    const originalText = {
+
+        early5:
+            "⭐ EARLY 5",
+
+        row1:
+            "🥇 FIRST ROW",
+
+        row2:
+            "🥈 SECOND ROW",
+
+        row3:
+            "🥉 THIRD ROW",
+
+        fullhouse:
+            "🏆 FULL HOUSIE"
+
+    };
+
+
     Object.keys(mapping).forEach(
         function(type) {
-
 
             const button =
                 document.getElementById(
@@ -1890,10 +2089,36 @@ function updateWinnerButtons(
                 );
 
 
+            if (!button) {
+                return;
+            }
+
+
+            /*
+             * Reset first.
+             */
+
+            button.classList.remove(
+                "already-won"
+            );
+
+
+            button.innerText =
+                originalText[type];
+
+
+            button.disabled =
+                false;
+
+
+            /*
+             * Mark winner.
+             */
+
             if (
+                winners &&
                 winners[type]
             ) {
-
 
                 button.disabled =
                     true;
@@ -1907,8 +2132,11 @@ function updateWinnerButtons(
                 button.innerText =
 
                     "✅ " +
-                    button.innerText +
+
+                    originalText[type] +
+
                     " — " +
+
                     winners[type];
 
             }
@@ -1919,13 +2147,44 @@ function updateWinnerButtons(
 }
 
 
+/* =====================================================
+RESET WINNER BUTTONS
+===================================================== */
+
+function resetWinnerButtons() {
+
+    updateWinnerButtons({
+
+        early5:
+            null,
+
+        row1:
+            null,
+
+        row2:
+            null,
+
+        row3:
+            null,
+
+        fullhouse:
+            null
+
+    });
+
+
+    document.getElementById(
+        "winnerList"
+    ).innerHTML = "";
+
+}
+
 
 /* =====================================================
 CLOSE WINNER
 ===================================================== */
 
 function closeWinner() {
-
 
     document.getElementById(
         "winNotification"
@@ -1934,7 +2193,6 @@ function closeWinner() {
     );
 
 }
-
 
 
 /* =====================================================
@@ -1947,58 +2205,98 @@ function sendChat() {
         return;
     }
 
-    if (socket.readyState !== WebSocket.OPEN) {
 
-        alert("Chat is not connected. Please wait a moment.");
+    if (
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
+
+        alert(
+            "Chat is not connected. Please wait a moment."
+        );
 
         return;
+
     }
 
+
     const input =
-        document.getElementById("chatInput");
+        document.getElementById(
+            "chatInput"
+        );
+
 
     const message =
         input.value.trim();
+
 
     if (!message) {
         return;
     }
 
+
     socket.send(
+
         JSON.stringify({
-            action: "chat",
-            message: message
+
+            action:
+                "chat",
+
+            message:
+                message
+
         })
+
     );
+
 
     input.value = "";
 
-}
 
+    input.focus();
+
+}
 
 
 /* =====================================================
 QUICK CHAT
 ===================================================== */
 
-function sendQuickChat(message) {
+function sendQuickChat(
+    message
+) {
 
     if (!socket) {
         return;
     }
 
-    if (socket.readyState !== WebSocket.OPEN) {
 
-        alert("Chat is not connected. Please wait a moment.");
+    if (
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
+
+        alert(
+            "Chat is not connected. Please wait a moment."
+        );
 
         return;
+
     }
 
+
     socket.send(
+
         JSON.stringify({
-            action: "chat",
-            message: message
+
+            action:
+                "chat",
+
+            message:
+                message
+
         })
+
     );
 
 }
@@ -2011,7 +2309,6 @@ EMOJI
 function addEmoji(
     emoji
 ) {
-
 
     const input =
         document.getElementById(
@@ -2027,16 +2324,14 @@ function addEmoji(
 }
 
 
-
 /* =====================================================
-CHAT MESSAGE
+ADD CHAT MESSAGE
 ===================================================== */
 
 function addChatMessage(
     name,
     message
 ) {
-
 
     const container =
         document.getElementById(
@@ -2054,15 +2349,35 @@ function addChatMessage(
         "chat-message";
 
 
-    div.innerHTML =
+    const strong =
+        document.createElement(
+            "strong"
+        );
 
-        `<strong>
-            👤 ${escapeHtml(name)}
-        </strong>
 
-        <span>
-            ${escapeHtml(message)}
-        </span>`;
+    strong.innerText =
+        "👤 " +
+        name;
+
+
+    const span =
+        document.createElement(
+            "span"
+        );
+
+
+    span.innerText =
+        message;
+
+
+    div.appendChild(
+        strong
+    );
+
+
+    div.appendChild(
+        span
+    );
 
 
     container.appendChild(
@@ -2076,12 +2391,9 @@ function addChatMessage(
 }
 
 
-
 /* =====================================================
 CHAT POPUP
 ===================================================== */
-
-let chatPopupTimer = null;
 
 function showChatPopup(
     name,
@@ -2093,35 +2405,53 @@ function showChatPopup(
             "chatPopup"
         );
 
+
     const popupTitle =
         document.getElementById(
             "chatPopupTitle"
         );
+
 
     const popupMessage =
         document.getElementById(
             "chatPopupMessage"
         );
 
+
     if (!popup) {
         return;
     }
 
-    if (!popupTitle || !popupMessage) {
-        return;
-    }
 
     popupTitle.innerText =
-        "💬 " + name;
+        "💬 " +
+        name;
+
 
     popupMessage.innerText =
         message;
 
-    popup.classList.remove("show");
+
+    /*
+     * Restart animation.
+     */
+
+    popup.classList.remove(
+        "show"
+    );
+
 
     void popup.offsetWidth;
 
-    popup.classList.add("show");
+
+    popup.classList.add(
+        "show"
+    );
+
+
+    /*
+     * Clear previous timer.
+     */
 
     if (chatPopupTimer) {
 
@@ -2131,9 +2461,14 @@ function showChatPopup(
 
     }
 
+
+    /*
+     * Hide after 4 seconds.
+     */
+
     chatPopupTimer =
         setTimeout(
-            function () {
+            function() {
 
                 popup.classList.remove(
                     "show"
@@ -2142,6 +2477,7 @@ function showChatPopup(
             },
             4000
         );
+
 }
 
 
@@ -2152,7 +2488,6 @@ ESCAPE HTML
 function escapeHtml(
     text
 ) {
-
 
     const div =
         document.createElement(
