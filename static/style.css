@@ -14,11 +14,25 @@ body {
     min-height: 100%;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     background: #0f172a;
     color: #ffffff;
     overflow-x: hidden;
+}
+
+
+/* =====================================================
+   BUTTON / INPUT INHERIT
+===================================================== */
+
+button,
+input {
+    font-family: inherit;
 }
 
 
@@ -45,14 +59,14 @@ body {
 
 .title-section h1 {
     margin: 0;
-    font-size: 38px;
+    font-size: clamp(25px, 4vw, 38px);
     font-weight: 800;
 }
 
 .title-section p {
-    margin-top: 8px;
+    margin: 8px 0 0;
     color: #cbd5e1;
-    font-size: 17px;
+    font-size: clamp(14px, 2vw, 17px);
 }
 
 
@@ -89,20 +103,31 @@ body {
     outline: none;
 }
 
+.login-card input::placeholder,
+.chat-input input::placeholder {
+    color: #94a3b8;
+}
+
 .login-card input:focus {
     border-color: #38bdf8;
 }
 
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
 .primary-button,
 .secondary-button {
     width: 100%;
-    height: 48px;
+    min-height: 48px;
     border: none;
     border-radius: 10px;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     margin-bottom: 12px;
+    touch-action: manipulation;
 }
 
 .primary-button {
@@ -119,6 +144,16 @@ body {
 .secondary-button:hover {
     opacity: 0.9;
 }
+
+.primary-button:active,
+.secondary-button:active {
+    transform: scale(0.98);
+}
+
+
+/* =====================================================
+   LOGIN MESSAGE
+===================================================== */
 
 .or {
     margin: 5px 0 15px;
@@ -161,6 +196,7 @@ body {
 }
 
 .top-bar > div {
+    min-width: 0;
     flex-shrink: 0;
 }
 
@@ -183,6 +219,7 @@ body {
     flex-wrap: wrap;
     gap: 8px;
     flex: 1;
+    min-width: 0;
 }
 
 .player-name {
@@ -190,6 +227,7 @@ body {
     background: #334155;
     border-radius: 8px;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 
@@ -199,8 +237,12 @@ body {
 
 .game-layout {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(320px, 1fr);
+
     gap: 20px;
+
     align-items: start;
 }
 
@@ -232,7 +274,7 @@ body {
 }
 
 #currentNumber {
-    font-size: 75px;
+    font-size: clamp(55px, 7vw, 75px);
     font-weight: 900;
     color: #38bdf8;
     line-height: 1;
@@ -245,8 +287,11 @@ body {
 
 .controls {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
+
     gap: 10px;
+
     margin-bottom: 15px;
 }
 
@@ -258,6 +303,7 @@ body {
     font-weight: bold;
     cursor: pointer;
     padding: 10px;
+    touch-action: manipulation;
 }
 
 .start-button {
@@ -272,9 +318,18 @@ body {
     background: #3b82f6;
 }
 
+.controls button:hover {
+    opacity: 0.9;
+}
+
+.controls button:active {
+    transform: scale(0.98);
+}
+
 .controls button:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+    transform: none;
 }
 
 
@@ -289,6 +344,7 @@ body {
     border-radius: 10px;
     color: #cbd5e1;
     text-align: center;
+    line-height: 1.5;
 }
 
 
@@ -318,6 +374,7 @@ body {
     margin-bottom: 18px;
     color: #94a3b8;
     font-size: 14px;
+    line-height: 1.5;
 }
 
 
@@ -328,30 +385,47 @@ body {
 .ticket {
     width: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .ticket-row {
     display: grid;
-    grid-template-columns: repeat(9, minmax(35px, 1fr));
+    grid-template-columns:
+        repeat(9, minmax(35px, 1fr));
+
+    width: 100%;
+    min-width: 405px;
 }
 
 .ticket-cell {
     min-height: 52px;
     border: 1px solid #475569;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     font-weight: bold;
     user-select: none;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
 }
 
 .number-cell {
     background: #334155;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 .number-cell:hover {
     background: #475569;
+}
+
+.number-cell:active {
+    transform: scale(0.95);
 }
 
 .number-cell.marked {
@@ -372,17 +446,22 @@ body {
 
 .number-board {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns:
+        repeat(10, minmax(0, 1fr));
+
     gap: 6px;
 }
 
 .board-number {
     min-height: 38px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     background: #334155;
     border-radius: 7px;
+
     font-weight: bold;
     font-size: 14px;
 }
@@ -400,13 +479,19 @@ body {
 .win-button {
     width: 100%;
     min-height: 45px;
+
     margin-bottom: 9px;
+
     border: none;
     border-radius: 9px;
+
     background: #3b82f6;
     color: #ffffff;
+
     font-weight: bold;
     cursor: pointer;
+
+    touch-action: manipulation;
 }
 
 .win-button:hover {
@@ -436,6 +521,7 @@ body {
     background: #334155;
     border-radius: 8px;
     font-size: 14px;
+    line-height: 1.4;
 }
 
 
@@ -450,11 +536,15 @@ body {
 .chat-messages {
     width: 100%;
     height: 250px;
+
     overflow-y: auto;
     overflow-x: hidden;
+
     padding: 10px;
     margin-bottom: 15px;
+
     background: #0f172a;
+
     border: 1px solid #334155;
     border-radius: 10px;
 }
@@ -462,14 +552,19 @@ body {
 .chat-message {
     margin-bottom: 10px;
     padding: 9px 11px;
+
     background: #334155;
     border-radius: 8px;
-    word-wrap: break-word;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .chat-message strong {
     display: block;
+
     color: #38bdf8;
+
     margin-bottom: 3px;
 }
 
@@ -494,16 +589,27 @@ body {
 .emoji-buttons button {
     border: none;
     border-radius: 8px;
+
     padding: 8px 10px;
+
     background: #334155;
     color: #ffffff;
+
     cursor: pointer;
+
     font-size: 13px;
+
+    touch-action: manipulation;
 }
 
 .quick-chat button:hover,
 .emoji-buttons button:hover {
     background: #475569;
+}
+
+.quick-chat button:active,
+.emoji-buttons button:active {
+    transform: scale(0.95);
 }
 
 
@@ -520,13 +626,20 @@ body {
 .chat-input input {
     flex: 1;
     min-width: 0;
+
     height: 45px;
+
     padding: 0 12px;
+
     border: 1px solid #475569;
     border-radius: 8px;
+
     background: #0f172a;
     color: #ffffff;
+
     outline: none;
+
+    font-size: 15px;
 }
 
 .chat-input input:focus {
@@ -536,12 +649,19 @@ body {
 .chat-input button {
     width: 80px;
     flex-shrink: 0;
+
     border: none;
     border-radius: 8px;
+
     background: #3b82f6;
     color: #ffffff;
+
     font-weight: bold;
     cursor: pointer;
+}
+
+.chat-input button:hover {
+    opacity: 0.9;
 }
 
 
@@ -555,7 +675,10 @@ body {
     top: 25px;
     right: 25px;
 
-    width: min(380px, calc(100vw - 40px));
+    width: min(
+        380px,
+        calc(100vw - 40px)
+    );
 
     min-height: 80px;
 
@@ -573,7 +696,6 @@ body {
     color: #ffffff;
 
     opacity: 0;
-
     visibility: hidden;
 
     transform:
@@ -592,25 +714,14 @@ body {
     overflow: hidden;
 }
 
-
-/* =====================================================
-   SHOW CHAT POPUP
-===================================================== */
-
 .chat-popup.show {
     opacity: 1;
-
     visibility: visible;
 
     transform:
         translateY(0)
         scale(1);
 }
-
-
-/* =====================================================
-   POPUP TITLE
-===================================================== */
 
 .chat-popup-title {
     display: block;
@@ -620,16 +731,10 @@ body {
     color: #38bdf8;
 
     font-size: 15px;
-
     font-weight: 800;
 
     line-height: 1.3;
 }
-
-
-/* =====================================================
-   POPUP MESSAGE
-===================================================== */
 
 .chat-popup-message {
     display: block;
@@ -645,7 +750,6 @@ body {
     white-space: normal;
 
     overflow-wrap: anywhere;
-
     word-break: break-word;
 }
 
@@ -660,7 +764,10 @@ body {
     top: 50%;
     left: 50%;
 
-    width: min(500px, calc(100vw - 30px));
+    width: min(
+        500px,
+        calc(100vw - 30px)
+    );
 
     padding: 30px;
 
@@ -680,7 +787,6 @@ body {
         scale(0.8);
 
     opacity: 0;
-
     visibility: hidden;
 
     transition:
@@ -693,7 +799,6 @@ body {
 
 .win-notification.show {
     opacity: 1;
-
     visibility: visible;
 
     transform:
@@ -714,12 +819,16 @@ body {
 
 .win-notification button {
     margin-top: 20px;
+
     width: 100px;
     height: 42px;
+
     border: none;
     border-radius: 8px;
+
     background: #22c55e;
     color: #ffffff;
+
     font-weight: bold;
     cursor: pointer;
 }
@@ -741,8 +850,13 @@ body {
 
     .right-column {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
         gap: 15px;
+
         align-items: start;
     }
 
@@ -751,6 +865,10 @@ body {
         margin-bottom: 0;
     }
 
+    .number-board {
+        grid-template-columns:
+            repeat(10, minmax(0, 1fr));
+    }
 }
 
 
@@ -773,14 +891,6 @@ body {
 
     .title-section {
         margin-bottom: 15px;
-    }
-
-    .title-section h1 {
-        font-size: 25px;
-    }
-
-    .title-section p {
-        font-size: 14px;
     }
 
 
@@ -813,6 +923,7 @@ body {
         max-height: 90px;
 
         overflow-y: auto;
+        overflow-x: hidden;
     }
 
 
@@ -820,7 +931,6 @@ body {
 
     .number-card {
         padding: 18px;
-
         margin-bottom: 12px;
     }
 
@@ -833,7 +943,6 @@ body {
 
     .controls {
         grid-template-columns: 1fr;
-
         gap: 8px;
     }
 
@@ -842,11 +951,10 @@ body {
     }
 
 
-    /* GAME MESSAGE */
+    /* MESSAGE */
 
     .game-message {
         padding: 10px;
-
         margin-bottom: 12px;
     }
 
@@ -868,7 +976,6 @@ body {
 
     .ticket {
         overflow-x: auto;
-
         padding-bottom: 5px;
     }
 
@@ -878,7 +985,6 @@ body {
 
     .ticket-cell {
         min-height: 45px;
-
         font-size: 14px;
     }
 
@@ -887,19 +993,18 @@ body {
 
     .number-board {
         grid-template-columns:
-            repeat(6, 1fr);
+            repeat(6, minmax(0, 1fr));
 
         gap: 5px;
     }
 
     .board-number {
         min-height: 35px;
-
         font-size: 13px;
     }
 
 
-    /* RIGHT COLUMN */
+    /* RIGHT */
 
     .right-column {
         display: block;
@@ -931,6 +1036,7 @@ body {
     .chat-input input {
         width: 100%;
         height: 43px;
+        font-size: 14px;
     }
 
     .chat-input button {
@@ -939,16 +1045,13 @@ body {
     }
 
 
-    /* =================================================
-       MOBILE CHAT POPUP
-    ================================================= */
+    /* CHAT POPUP */
 
     .chat-popup {
 
         top: 12px;
 
         left: 10px;
-
         right: 10px;
 
         width: auto;
@@ -973,13 +1076,11 @@ body {
 
     .chat-popup-title {
         font-size: 14px;
-
         margin-bottom: 5px;
     }
 
     .chat-popup-message {
         font-size: 14px;
-
         line-height: 1.4;
     }
 
@@ -988,14 +1089,12 @@ body {
 
     .win-notification {
         width: calc(100vw - 30px);
-
         padding: 22px 16px;
     }
 
     #winText {
         font-size: 17px;
     }
-
 }
 
 
@@ -1004,6 +1103,10 @@ body {
 ===================================================== */
 
 @media (max-width: 380px) {
+
+    .container {
+        padding: 7px;
+    }
 
     .title-section h1 {
         font-size: 22px;
@@ -1031,4 +1134,41 @@ body {
         font-size: 12px;
     }
 
+    .chat-input button {
+        width: 62px;
+        font-size: 13px;
+    }
+}
+
+
+/* =====================================================
+   LANDSCAPE MOBILE
+===================================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    .container {
+        padding: 10px;
+    }
+
+    .top-bar {
+        margin-bottom: 10px;
+    }
+
+    .number-card {
+        padding: 12px;
+    }
+
+    #currentNumber {
+        font-size: 48px;
+    }
+
+    .controls {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .chat-messages {
+        height: 160px;
+    }
 }
