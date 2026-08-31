@@ -974,135 +974,116 @@ CHAT INPUT
 
 
 /* =====================================================
-CHAT POPUP
-===================================================== */
+   CHAT POPUP
+   ===================================================== */
 
 .chat-popup {
+    position: fixed !important;
 
-    position: fixed;
-
-    top: 25px;
-
-    right: 25px;
+    top: 20px !important;
+    right: 20px !important;
+    left: auto !important;
+    bottom: auto !important;
 
     width: 320px;
+    max-width: calc(100vw - 40px);
 
-    max-width: calc(100% - 30px);
+    padding: 15px 18px;
 
-    padding: 16px 18px;
+    background: white;
 
-    background:
-        rgba(
-            17,
-            24,
-            39,
-            0.96
-        );
-
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.2
-        );
-
-    border-radius: 15px;
+    border-radius: 12px;
 
     box-shadow:
-        0 15px 40px
-        rgba(
-            0,
-            0,
-            0,
-            0.45
-        );
+        0 8px 25px rgba(0, 0, 0, 0.25);
 
-    z-index: 10000;
+    z-index: 999999 !important;
 
     opacity: 0;
 
-    transform:
-        translateX(120%);
+    visibility: hidden;
 
-    pointer-events: none;
+    transform: translateY(-20px);
 
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        visibility 0.3s ease;
+
+    box-sizing: border-box;
 }
 
+
+/* =====================================================
+   SHOW POPUP
+   ===================================================== */
 
 .chat-popup.show {
 
-    animation:
-        chatPopupShow 3s ease forwards;
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
 
 }
 
+
+/* =====================================================
+   POPUP TITLE
+   ===================================================== */
 
 .chat-popup-title {
 
-    font-size: 13px;
-
     font-weight: bold;
 
-    opacity: 0.75;
-
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 
 }
 
+
+/* =====================================================
+   POPUP MESSAGE
+   ===================================================== */
 
 .chat-popup-message {
 
-    font-size: 16px;
+    word-wrap: break-word;
 
-    line-height: 1.4;
-
-    word-break: break-word;
+    overflow-wrap: anywhere;
 
 }
 
 
-@keyframes chatPopupShow {
+/* =====================================================
+   MOBILE
+   ===================================================== */
 
-    0% {
+@media (max-width: 600px) {
 
-        opacity: 0;
+    .chat-popup {
 
-        transform:
-            translateX(120%);
+        position: fixed !important;
 
-    }
+        top: 15px !important;
 
-    10% {
+        right: 15px !important;
 
-        opacity: 1;
+        left: auto !important;
 
-        transform:
-            translateX(0);
+        bottom: auto !important;
 
-    }
+        width: 280px;
 
-    80% {
+        max-width: calc(100vw - 30px);
 
-        opacity: 1;
+        padding: 13px 15px;
 
-        transform:
-            translateX(0);
-
-    }
-
-    100% {
-
-        opacity: 0;
-
-        transform:
-            translateX(120%);
+        z-index: 999999 !important;
 
     }
 
 }
-
 
 /* =====================================================
 WINNER POPUP
