@@ -144,8 +144,6 @@ async def automatic_number_caller(room_code):
 
         room = rooms[room_code]
 
-
-        # Stop if automatic calling is disabled
         if not room.get(
             "auto_calling",
             False
@@ -153,78 +151,51 @@ async def automatic_number_caller(room_code):
 
             break
 
-
-        # Get available numbers
         available_numbers = [
 
             number
 
             for number in range(1, 91)
 
-            if number
-            not in room["called_numbers"]
+            if number not in room["called_numbers"]
 
         ]
 
-
-        # All numbers have been called
         if not available_numbers:
 
             room["auto_calling"] = False
 
             await broadcast(
-
                 room_code,
-
                 {
-
-                    "type":
-                        "game_finished"
-
+                    "type": "game_finished"
                 }
-
             )
 
             break
 
-
-        # Pick random number
         number = random.choice(
             available_numbers
         )
 
-
-        # Save number
         room["called_numbers"].append(
             number
         )
 
-
         room["current_number"] = number
 
-
-        # Send number to everyone
         await broadcast(
-
             room_code,
-
             {
+                "type": "number_called",
 
-                "type":
-                    "number_called",
-
-                "number":
-                    number,
+                "number": number,
 
                 "called_numbers":
                     room["called_numbers"]
-
             }
-
         )
 
-
-        # Wait 5 seconds
         await asyncio.sleep(5)
 
 
@@ -241,7 +212,6 @@ async def websocket_endpoint(
     await websocket.accept()
 
     room_code = room_code.upper().strip()
-
 
     # =================================================
     # CHECK ROOM
@@ -262,11 +232,9 @@ async def websocket_endpoint(
 
         return
 
-
     room = rooms[room_code]
 
     player = None
-
 
     try:
 
@@ -283,16 +251,13 @@ async def websocket_endpoint(
             )
         ).strip()
 
-
         if not player_name:
 
             player_name = "Player"
 
-
         if len(player_name) > 20:
 
             player_name = player_name[:20]
-
 
         # =============================================
         # CREATE PLAYER
@@ -310,10 +275,21 @@ async def websocket_endpoint(
                 generate_ticket(),
 
             "is_host":
-                False
+                False,
+
+            # NEW:
+            # Unique ID for this player.
+            # Used to identify the sender of chat.
+            "player_id":
+                "".join(
+                    random.choices(
+                        string.ascii_letters +
+                        string.digits,
+                        k=16
+                    )
+                )
 
         }
-
 
         # =============================================
         # FIRST PLAYER = HOST
@@ -325,9 +301,7 @@ async def websocket_endpoint(
 
             player["is_host"] = True
 
-
         room["players"].append(player)
-
 
         # =============================================
         # SEND JOINED
@@ -348,10 +322,13 @@ async def websocket_endpoint(
                 player["is_host"],
 
             "ticket":
-                player["ticket"]
+                player["ticket"],
+
+            # NEW:
+            "player_id":
+                player["player_id"]
 
         })
-
 
         # =============================================
         # SEND CURRENT GAME STATE
@@ -376,7 +353,6 @@ async def websocket_endpoint(
 
         })
 
-
         # =============================================
         # UPDATE PLAYER LIST
         # =============================================
@@ -384,7 +360,6 @@ async def websocket_endpoint(
         await broadcast_players(
             room_code
         )
-
 
         # =============================================
         # MAIN WEBSOCKET LOOP
@@ -395,7 +370,6 @@ async def websocket_endpoint(
             data = await websocket.receive_json()
 
             action = data.get("action")
-
 
             # =========================================
             # START GAME
@@ -417,15 +391,11 @@ async def websocket_endpoint(
 
                     continue
 
-
                 # -------------------------------------
                 # GAME ALREADY STARTED
                 # -------------------------------------
 
                 if room["started"]:
-
-                    # Start automatic calling again
-                    # if it was stopped.
 
                     if not room.get(
                         "auto_calling",
@@ -434,33 +404,23 @@ async def websocket_endpoint(
 
                         room["auto_calling"] = True
 
-
                         room["auto_call_task"] = (
                             asyncio.create_task(
-
                                 automatic_number_caller(
                                     room_code
                                 )
-
                             )
                         )
 
-
                         await broadcast(
-
                             room_code,
-
                             {
-
                                 "type":
                                     "auto_calling_started"
-
                             }
-
                         )
 
                     continue
-
 
                 # -------------------------------------
                 # START GAME
@@ -468,23 +428,15 @@ async def websocket_endpoint(
 
                 room["started"] = True
 
-
                 room["auto_calling"] = True
 
-
                 await broadcast(
-
                     room_code,
-
                     {
-
                         "type":
                             "game_started"
-
                     }
-
                 )
-
 
                 # -------------------------------------
                 # START AUTOMATIC CALLING
@@ -492,28 +444,19 @@ async def websocket_endpoint(
 
                 room["auto_call_task"] = (
                     asyncio.create_task(
-
                         automatic_number_caller(
                             room_code
                         )
-
                     )
                 )
 
-
                 await broadcast(
-
                     room_code,
-
                     {
-
                         "type":
                             "auto_calling_started"
-
                     }
-
                 )
-
 
             # =========================================
             # STOP AUTOMATIC CALLING
@@ -535,36 +478,25 @@ async def websocket_endpoint(
 
                     continue
 
-
                 room["auto_calling"] = False
-
 
                 task = room.get(
                     "auto_call_task"
                 )
 
-
                 if task and not task.done():
 
                     task.cancel()
 
-
                 room["auto_call_task"] = None
 
-
                 await broadcast(
-
                     room_code,
-
                     {
-
                         "type":
                             "auto_calling_stopped"
-
                     }
-
                 )
-
 
             # =========================================
             # CALL NUMBER
@@ -586,11 +518,9 @@ async def websocket_endpoint(
 
                     continue
 
-
                 if not room["started"]:
 
                     continue
-
 
                 available_numbers = [
 
@@ -598,47 +528,34 @@ async def websocket_endpoint(
 
                     for number in range(1, 91)
 
-                    if number
-                    not in room["called_numbers"]
+                    if number not in room["called_numbers"]
 
                 ]
-
 
                 if not available_numbers:
 
                     await broadcast(
-
                         room_code,
-
                         {
-
                             "type":
                                 "game_finished"
-
                         }
-
                     )
 
                     continue
-
 
                 number = random.choice(
                     available_numbers
                 )
 
-
                 room["called_numbers"].append(
                     number
                 )
 
-
                 room["current_number"] = number
 
-
                 await broadcast(
-
                     room_code,
-
                     {
 
                         "type":
@@ -651,9 +568,7 @@ async def websocket_endpoint(
                             room["called_numbers"]
 
                     }
-
                 )
-
 
             # =========================================
             # CHAT
@@ -668,21 +583,22 @@ async def websocket_endpoint(
                     )
                 ).strip()
 
-
                 if not message:
 
                     continue
-
 
                 if len(message) > 150:
 
                     message = message[:150]
 
+                # IMPORTANT:
+                # Broadcast to EVERY player.
+                #
+                # sender_id tells each browser
+                # who originally sent the message.
 
                 await broadcast(
-
                     room_code,
-
                     {
 
                         "type":
@@ -692,12 +608,14 @@ async def websocket_endpoint(
                             player["name"],
 
                         "message":
-                            message
+                            message,
+
+                        # NEW:
+                        "sender_id":
+                            player["player_id"]
 
                     }
-
                 )
-
 
             # =========================================
             # CLAIM WIN
@@ -709,16 +627,10 @@ async def websocket_endpoint(
                     "win_type"
                 )
 
-
                 marked_numbers = data.get(
                     "marked_numbers",
                     []
                 )
-
-
-                # =====================================
-                # CHECK IF ALREADY WON
-                # =====================================
 
                 if room["winners"].get(
                     win_type
@@ -736,7 +648,6 @@ async def websocket_endpoint(
 
                     continue
 
-
                 result = validate_win(
 
                     player,
@@ -749,18 +660,14 @@ async def websocket_endpoint(
 
                 )
 
-
                 if result["valid"]:
 
                     room["winners"][
                         win_type
                     ] = player["name"]
 
-
                     await broadcast(
-
                         room_code,
-
                         {
 
                             "type":
@@ -779,9 +686,7 @@ async def websocket_endpoint(
                                 room["winners"]
 
                         }
-
                     )
-
 
                 else:
 
@@ -795,7 +700,6 @@ async def websocket_endpoint(
 
                     })
 
-
     # =================================================
     # PLAYER DISCONNECTED
     # =================================================
@@ -806,29 +710,23 @@ async def websocket_endpoint(
 
             room["players"].remove(player)
 
-
         # =============================================
         # HOST TRANSFER
         # =============================================
 
         if player == room["host"]:
 
-            # Stop automatic calling
             room["auto_calling"] = False
-
 
             task = room.get(
                 "auto_call_task"
             )
 
-
             if task and not task.done():
 
                 task.cancel()
 
-
             room["auto_call_task"] = None
-
 
             if room["players"]:
 
@@ -836,11 +734,8 @@ async def websocket_endpoint(
 
                 room["host"]["is_host"] = True
 
-
                 await broadcast(
-
                     room_code,
-
                     {
 
                         "type":
@@ -850,7 +745,6 @@ async def websocket_endpoint(
                             room["host"]["name"]
 
                     }
-
                 )
 
             else:
@@ -858,7 +752,6 @@ async def websocket_endpoint(
                 del rooms[room_code]
 
                 return
-
 
         await broadcast_players(
             room_code
@@ -892,7 +785,6 @@ def validate_win(
 
         }
 
-
     # =================================================
     # VALID TYPES
     # =================================================
@@ -911,7 +803,6 @@ def validate_win(
 
     ]
 
-
     if win_type not in valid_types:
 
         return {
@@ -923,7 +814,6 @@ def validate_win(
                 "Invalid winning option."
 
         }
-
 
     # =================================================
     # CONVERT MARKED NUMBERS
@@ -951,13 +841,11 @@ def validate_win(
 
         }
 
-
     # =================================================
     # GET ALL TICKET NUMBERS
     # =================================================
 
     ticket_numbers = []
-
 
     for row in player["ticket"]:
 
@@ -969,11 +857,9 @@ def validate_win(
                     number
                 )
 
-
     ticket_numbers = set(
         ticket_numbers
     )
-
 
     # =================================================
     # ONLY TICKET NUMBERS
@@ -993,7 +879,6 @@ def validate_win(
 
         }
 
-
     # =================================================
     # ONLY CALLED NUMBERS
     # =================================================
@@ -1001,7 +886,6 @@ def validate_win(
     called = set(
         room["called_numbers"]
     )
-
 
     if not marked.issubset(
         called
@@ -1016,7 +900,6 @@ def validate_win(
                 "You marked a number that has not been called."
 
         }
-
 
     # =================================================
     # EARLY 5
@@ -1036,7 +919,6 @@ def validate_win(
 
             }
 
-
         return {
 
             "valid":
@@ -1046,7 +928,6 @@ def validate_win(
                 "You need at least 5 marked numbers."
 
         }
-
 
     # =================================================
     # ROW
@@ -1072,7 +953,6 @@ def validate_win(
 
         }[win_type]
 
-
         row_numbers = {
 
             number
@@ -1084,7 +964,6 @@ def validate_win(
             if number is not None
 
         }
-
 
         if row_numbers.issubset(
             marked
@@ -1103,7 +982,6 @@ def validate_win(
 
             }[win_type]
 
-
             return {
 
                 "valid":
@@ -1114,7 +992,6 @@ def validate_win(
 
             }
 
-
         return {
 
             "valid":
@@ -1124,7 +1001,6 @@ def validate_win(
                 "You have not completed this row."
 
         }
-
 
     # =================================================
     # FULL HOUSE
@@ -1146,7 +1022,6 @@ def validate_win(
 
             }
 
-
         return {
 
             "valid":
@@ -1156,7 +1031,6 @@ def validate_win(
                 "You have not completed your Full Housie."
 
         }
-
 
     return {
 
@@ -1181,9 +1055,7 @@ async def broadcast_players(
 
         return
 
-
     room = rooms[room_code]
-
 
     players = [
 
@@ -1201,11 +1073,8 @@ async def broadcast_players(
 
     ]
 
-
     await broadcast(
-
         room_code,
-
         {
 
             "type":
@@ -1215,7 +1084,6 @@ async def broadcast_players(
                 players
 
         }
-
     )
 
 
@@ -1232,14 +1100,15 @@ async def broadcast(
 
         return
 
-
     room = rooms[room_code]
-
 
     disconnected = []
 
+    # IMPORTANT:
+    # Send the SAME message to every connected
+    # player in this room.
 
-    for player in room["players"]:
+    for player in list(room["players"]):
 
         try:
 
@@ -1253,6 +1122,7 @@ async def broadcast(
                 player
             )
 
+    # Remove disconnected players
 
     for player in disconnected:
 
