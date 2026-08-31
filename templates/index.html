@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Online Housie</title>
+
+<link
+    rel="stylesheet"
+    href="/static/style.css"
+>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+TITLE
+===================================================== -->
+
+<div class="title-section">
+
+<h1>🎟️ ONLINE HOUSIE</h1>
+
+<p>
+    Multiplayer Tambola
+</p>
+
+</div>
+
+
+
+<!-- =====================================================
+LOGIN
+===================================================== -->
+
+<div
+    id="loginSection"
+    class="login-card"
+>
+
+
+<h2>👤 Enter Your Name</h2>
+
+
+<input
+    id="playerName"
+    type="text"
+    maxlength="20"
+    autocomplete="off"
+    placeholder="Enter your name"
+>
+
+
+<button
+    class="primary-button"
+    onclick="createRoom()"
+>
+
+🏠 CREATE ROOM
+
+</button>
+
+
+<div class="or">
+
+OR
+
+</div>
+
+
+<input
+    id="roomCode"
+    type="text"
+    maxlength="6"
+    minlength="6"
+    inputmode="text"
+    autocomplete="off"
+    placeholder="6-CHARACTER ROOM CODE"
+>
+
+
+<button
+    class="secondary-button"
+    onclick="joinRoom()"
+>
+
+🚪 JOIN ROOM
+
+</button>
+
+
+<p
+    id="roomMessage"
+    class="room-message"
+></p>
+
+
+</div>
+
+
+
+<!-- =====================================================
+GAME
+===================================================== -->
+
+<div
+    id="gameSection"
+    style="display:none;"
+>
+
+
+<!-- =====================================================
+TOP BAR
+===================================================== -->
+
+<div class="top-bar">
+
+
+<div>
+
+<strong>ROOM</strong>
+
+<div
+    id="roomDisplay"
+    class="room-display"
+>
+-
+</div>
+
+</div>
+
+
+<div>
+
+<strong>PLAYERS</strong>
+
+<div
+    id="playerCount"
+    class="player-count"
+>
+0
+</div>
+
+</div>
+
+
+<div
+    id="players"
+    class="players-list"
+>
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+GAME LAYOUT
+===================================================== -->
+
+<div class="game-layout">
+
+
+
+<!-- =====================================================
+LEFT
+===================================================== -->
+
+<div class="left-column">
+
+
+
+<!-- CURRENT NUMBER -->
+
+<div class="number-card">
+
+
+<div class="small-title">
+
+CURRENT NUMBER
+
+</div>
+
+
+<div
+    id="currentNumber"
+>
+-
+</div>
+
+
+</div>
+
+
+
+<!-- HOST CONTROLS -->
+
+<div
+    id="hostControls"
+    class="controls"
+    style="display:none;"
+>
+
+
+<button
+    id="startButton"
+    class="start-button"
+    onclick="startGame()"
+>
+
+▶ START GAME
+
+</button>
+
+
+<button
+    id="callButton"
+    class="call-button"
+    onclick="callNumber()"
+    disabled
+>
+
+📢 CALL NEXT NUMBER
+
+</button>
+
+
+</div>
+
+
+
+<div
+    id="message"
+    class="game-message"
+>
+
+Waiting for host...
+
+</div>
+
+
+
+<!-- =====================================================
+TICKET
+===================================================== -->
+
+<div class="ticket-area">
+
+
+<h2>
+🎟️ YOUR TICKET
+</h2>
+
+
+<p class="hint">
+
+Find the called number yourself and click it.
+
+</p>
+
+
+<div
+    id="ticket"
+    class="ticket"
+></div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+NUMBER BOARD
+===================================================== -->
+
+<div class="ticket-area">
+
+
+<h2>
+🔢 NUMBER BOARD
+</h2>
+
+
+<p class="hint">
+
+🔴 Red = Number already called
+
+</p>
+
+
+<div
+    id="numberBoard"
+    class="number-board"
+>
+
+
+<script>
+
+for (
+    let number = 1;
+    number <= 90;
+    number++
+) {
+
+    document.write(
+
+        `<div
+            id="number-${number}"
+            class="board-number"
+        >
+            ${number}
+        </div>`
+
+    );
+
+}
+
+</script>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+RIGHT
+===================================================== -->
+
+<div class="right-column">
+
+
+
+<!-- =====================================================
+WINNING OPTIONS
+===================================================== -->
+
+<div class="winning-area">
+
+
+<h2>
+🏆 WINNING OPTIONS
+</h2>
+
+
+<p class="hint">
+
+Complete the pattern and claim your prize.
+
+</p>
+
+
+<button
+    id="win-early5"
+    class="win-button"
+    onclick="claimWin('early5')"
+>
+
+⭐ EARLY 5
+
+</button>
+
+
+<button
+    id="win-row1"
+    class="win-button"
+    onclick="claimWin('row1')"
+>
+
+🥇 FIRST ROW
+
+</button>
+
+
+<button
+    id="win-row2"
+    class="win-button"
+    onclick="claimWin('row2')"
+>
+
+🥈 SECOND ROW
+
+</button>
+
+
+<button
+    id="win-row3"
+    class="win-button"
+    onclick="claimWin('row3')"
+>
+
+🥉 THIRD ROW
+
+</button>
+
+
+<button
+    id="win-fullhouse"
+    class="win-button full-house"
+    onclick="claimWin('fullhouse')"
+>
+
+🏆 FULL HOUSIE
+
+</button>
+
+
+<div
+    id="winnerList"
+    class="winner-list"
+>
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+CHAT
+===================================================== -->
+
+<div class="chat-area">
+
+
+<h2>
+💬 CHAT
+</h2>
+
+
+<div
+    id="chatMessages"
+    class="chat-messages"
+>
+</div>
+
+
+
+<h3>
+Quick Messages
+</h3>
+
+
+<div class="quick-chat">
+
+
+<button onclick="sendQuickChat('👋 Hi!')">
+👋 Hi!
+</button>
+
+
+<button onclick="sendQuickChat('😂 LOL')">
+😂 LOL
+</button>
+
+
+<button onclick="sendQuickChat('🎉 Nice!')">
+🎉 Nice!
+</button>
+
+
+<button onclick="sendQuickChat('🔥 Good game!')">
+🔥 Good game!
+</button>
+
+
+<button onclick="sendQuickChat('👏 Well played!')">
+👏 Well played!
+</button>
+
+
+<button onclick="sendQuickChat('😎 Let’s go!')">
+😎 Let's go!
+</button>
+
+
+<button onclick="sendQuickChat('👍 Good luck!')">
+👍 Good luck!
+</button>
+
+
+<button onclick="sendQuickChat('🎊 Congratulations!')">
+🎊 Congratulations!
+</button>
+
+
+</div>
+
+
+
+<h3>
+Emojis
+</h3>
+
+
+<div class="emoji-buttons">
+
+
+<button onclick="addEmoji('😀')">
+😀
+</button>
+
+
+<button onclick="addEmoji('😂')">
+😂
+</button>
+
+
+<button onclick="addEmoji('😍')">
+😍
+</button>
+
+
+<button onclick="addEmoji('😎')">
+😎
+</button>
+
+
+<button onclick="addEmoji('🔥')">
+🔥
+</button>
+
+
+<button onclick="addEmoji('🎉')">
+🎉
+</button>
+
+
+<button onclick="addEmoji('👏')">
+👏
+</button>
+
+
+<button onclick="addEmoji('👍')">
+👍
+</button>
+
+
+<button onclick="addEmoji('❤️')">
+❤️
+</button>
+
+
+<button onclick="addEmoji('🤣')">
+🤣
+</button>
+
+
+</div>
+
+
+
+<div class="chat-input">
+
+
+<input
+    id="chatInput"
+    type="text"
+    maxlength="150"
+    placeholder="Write a message..."
+>
+
+
+<button
+    onclick="sendChat()"
+>
+
+SEND
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+WINNER POPUP
+===================================================== -->
+
+<div
+    id="winNotification"
+    class="win-notification"
+>
+
+
+<div class="confetti">
+
+🎉 🎊 🥳 🎊 🎉
+
+</div>
+
+
+<div id="winText">
+
+</div>
+
+
+<button
+    onclick="closeWinner()"
+>
+
+OK
+
+</button>
+
+
+</div>
+
+
+
+<!-- =====================================================
+JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+let socket = null;
+
+let currentRoom = "";
+
+let myTicket = [];
+
+let myName = "";
+
+
+
+/* =====================================================
+ROOM CODE INPUT
+===================================================== */
+
+const roomCodeInput =
+    document.getElementById(
+        "roomCode"
+    );
+
+
+roomCodeInput.addEventListener(
+    "input",
+    function () {
+
+        this.value =
+            this.value
+                .toUpperCase()
+                .replace(
+                    /[^A-Z0-9]/g,
+                    ""
+                )
+                .slice(0, 6);
+
+    }
+);
+
+
+
+/* =====================================================
+CREATE ROOM
+===================================================== */
+
+async function createRoom() {
+
+
+    const name =
+        document.getElementById(
+            "playerName"
+        ).value.trim();
+
+
+    if (!name) {
+
+        alert(
+            "Please enter your name first."
+        );
+
+        return;
+
+    }
+
+
+    myName = name;
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/create-room",
+                {
+                    method: "POST"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to create room."
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const code =
+            data.room_code;
+
+
+        document.getElementById(
+            "roomCode"
+        ).value = code;
+
+
+        document.getElementById(
+            "roomMessage"
+        ).innerHTML =
+
+            "<strong>Your Room Code:</strong><br>" +
+
+            "<span class='room-code'>" +
+
+            code +
+
+            "</span><br>" +
+
+            "Share this 6-character code with your friend.";
+
+
+        connectToRoom(
+            code,
+            name
+        );
+
+
+    }
+    catch (error) {
+
+
+        console.error(error);
+
+
+        alert(
+            "Could not create room. " +
+            "Please make sure the server is running."
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+JOIN ROOM
+===================================================== */
+
+function joinRoom() {
+
+
+    const name =
+        document.getElementById(
+            "playerName"
+        ).value.trim();
+
+
+    let code =
+        document.getElementById(
+            "roomCode"
+        ).value.trim()
+        .toUpperCase();
+
+
+    code =
+        code
+            .replace(
+                /[^A-Z0-9]/g,
+                ""
+            )
+            .slice(0, 6);
+
+
+    document.getElementById(
+        "roomCode"
+    ).value = code;
+
+
+    if (!name) {
+
+        alert(
+            "Please enter your name first."
+        );
+
+        return;
+
+    }
+
+
+    if (code.length !== 6) {
+
+        alert(
+            "Room code must contain exactly 6 characters."
+        );
+
+        return;
+
+    }
+
+
+    myName = name;
+
+
+    connectToRoom(
+        code,
+        name
+    );
+
+}
+
+
+
+/* =====================================================
+CONNECT
+===================================================== */
+
+function connectToRoom(
+    code,
+    name
+) {
+
+
+    currentRoom = code;
+
+
+    const protocol =
+        location.protocol === "https:"
+            ? "wss:"
+            : "ws:";
+
+
+    socket =
+        new WebSocket(
+
+            protocol +
+            "//" +
+            location.host +
+            "/ws/" +
+            code
+
+        );
+
+
+    socket.onopen =
+        function () {
+
+
+            socket.send(
+
+                JSON.stringify({
+
+                    name:
+                        name
+
+                })
+
+            );
+
+        };
+
+
+
+    socket.onmessage =
+        function (event) {
+
+
+            const data =
+                JSON.parse(
+                    event.data
+                );
+
+
+            /* =========================================
+            ERROR
+            ========================================= */
+
+            if (
+                data.type === "error"
+            ) {
+
+                alert(
+                    data.message
+                );
+
+                return;
+
+            }
+
+
+
+            /* =========================================
+            JOINED
+            ========================================= */
+
+            if (
+                data.type === "joined"
+            ) {
+
+
+                document.getElementById(
+                    "loginSection"
+                ).style.display =
+                    "none";
+
+
+                document.getElementById(
+                    "gameSection"
+                ).style.display =
+                    "block";
+
+
+                document.getElementById(
+                    "roomDisplay"
+                ).innerText =
+                    data.room;
+
+
+                myTicket =
+                    data.ticket;
+
+
+                displayTicket(
+                    myTicket
+                );
+
+
+                if (data.is_host) {
+
+
+                    document.getElementById(
+                        "hostControls"
+                    ).style.display =
+                        "block";
+
+
+                    document.getElementById(
+                        "message"
+                    ).innerText =
+                        "👑 You are the HOST.";
+
+                }
+                else {
+
+
+                    document.getElementById(
+                        "message"
+                    ).innerText =
+                        "Waiting for host to start.";
+
+                }
+
+            }
+
+
+
+            /* =========================================
+            PLAYERS
+            ========================================= */
+
+            if (
+                data.type === "players"
+            ) {
+
+
+                const players =
+                    data.players;
+
+
+                document.getElementById(
+                    "playerCount"
+                ).innerText =
+                    players.length;
+
+
+                let html = "";
+
+
+                players.forEach(
+                    function(player) {
+
+
+                        html +=
+
+                            `<div class="player-name">
+
+                                👤
+                                ${escapeHtml(player.name)}
+
+                                ${
+                                    player.is_host
+                                        ? " 👑 HOST"
+                                        : ""
+                                }
+
+                            </div>`;
+
+                    }
+                );
+
+
+                document.getElementById(
+                    "players"
+                ).innerHTML =
+                    html;
+
+            }
+
+
+
+            /* =========================================
+            GAME STARTED
+            ========================================= */
+
+            if (
+                data.type ===
+                "game_started"
+            ) {
+
+
+                const startButton =
+                    document.getElementById(
+                        "startButton"
+                    );
+
+
+                const callButton =
+                    document.getElementById(
+                        "callButton"
+                    );
+
+
+                if (startButton) {
+
+                    startButton.disabled =
+                        true;
+
+                }
+
+
+                if (callButton) {
+
+                    callButton.disabled =
+                        false;
+
+                }
+
+
+                document.getElementById(
+                    "message"
+                ).innerText =
+                    "🎮 Game started! Good luck!";
+
+            }
+
+
+
+            /* =========================================
+            NUMBER CALLED
+            ========================================= */
+
+            if (
+                data.type ===
+                "number_called"
+            ) {
+
+
+                const number =
+                    data.number;
+
+
+                document.getElementById(
+                    "currentNumber"
+                ).innerText =
+                    number;
+
+
+                const boardNumber =
+                    document.getElementById(
+                        "number-" + number
+                    );
+
+
+                if (boardNumber) {
+
+                    boardNumber.classList.add(
+                        "called-number"
+                    );
+
+                }
+
+
+                /*
+                IMPORTANT:
+
+                NO YELLOW AUTO HIGHLIGHT.
+
+                Player has to find the number
+                on their own ticket.
+                */
+
+
+                document.getElementById(
+                    "message"
+                ).innerText =
+
+                    "📢 Number " +
+                    number +
+                    " called!";
+
+            }
+
+
+
+            /* =========================================
+            GAME STATE
+            ========================================= */
+
+            if (
+                data.type ===
+                "game_state"
+            ) {
+
+
+                if (
+                    data.called_numbers
+                ) {
+
+
+                    data.called_numbers.forEach(
+                        function(number) {
+
+
+                            const boardNumber =
+                                document.getElementById(
+                                    "number-" +
+                                    number
+                                );
+
+
+                            if (boardNumber) {
+
+                                boardNumber.classList.add(
+                                    "called-number"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                if (
+                    data.current_number
+                ) {
+
+
+                    document.getElementById(
+                        "currentNumber"
+                    ).innerText =
+                        data.current_number;
+
+                }
+
+
+                if (
+                    data.winners
+                ) {
+
+                    updateWinnerButtons(
+                        data.winners
+                    );
+
+                }
+
+            }
+
+
+
+            /* =========================================
+            CHAT
+            ========================================= */
+
+            if (
+                data.type === "chat"
+            ) {
+
+
+                addChatMessage(
+
+                    data.name,
+
+                    data.message
+
+                );
+
+            }
+
+
+
+            /* =========================================
+            WIN CLAIMED
+            ========================================= */
+
+            if (
+                data.type ===
+                "win_claimed"
+            ) {
+
+
+                handleWin(
+                    data
+                );
+
+            }
+
+
+
+            /* =========================================
+            WIN ERROR
+            ========================================= */
+
+            if (
+                data.type ===
+                "win_error"
+            ) {
+
+
+                alert(
+                    "❌ " +
+                    data.message
+                );
+
+            }
+
+
+
+            /* =========================================
+            HOST CHANGED
+            ========================================= */
+
+            if (
+                data.type ===
+                "host_changed"
+            ) {
+
+
+                document.getElementById(
+                    "message"
+                ).innerText =
+
+                    "👑 " +
+                    data.name +
+                    " is now the host.";
+
+            }
+
+        };
+
+
+
+    socket.onerror =
+        function () {
+
+            console.error(
+                "WebSocket error"
+            );
+
+        };
+
+
+
+    socket.onclose =
+        function () {
+
+            console.log(
+                "Disconnected from room."
+            );
+
+        };
+
+}
+
+
+
+/* =====================================================
+DISPLAY TICKET
+===================================================== */
+
+function displayTicket(
+    ticket
+) {
+
+
+    const container =
+        document.getElementById(
+            "ticket"
+        );
+
+
+    container.innerHTML = "";
+
+
+    ticket.forEach(
+        function(row) {
+
+
+            const rowDiv =
+                document.createElement(
+                    "div"
+                );
+
+
+            rowDiv.className =
+                "ticket-row";
+
+
+            row.forEach(
+                function(number) {
+
+
+                    const cell =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    cell.className =
+                        "ticket-cell";
+
+
+                    if (
+                        number !== null &&
+                        number !== undefined
+                    ) {
+
+
+                        cell.classList.add(
+                            "number-cell"
+                        );
+
+
+                        cell.innerText =
+                            number;
+
+
+                        cell.dataset.number =
+                            number;
+
+
+                        cell.onclick =
+                            function () {
+
+                                markNumber(
+                                    cell
+                                );
+
+                            };
+
+                    }
+                    else {
+
+
+                        cell.classList.add(
+                            "empty-cell"
+                        );
+
+                    }
+
+
+                    rowDiv.appendChild(
+                        cell
+                    );
+
+                }
+            );
+
+
+            container.appendChild(
+                rowDiv
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+MARK NUMBER
+===================================================== */
+
+function markNumber(
+    cell
+) {
+
+
+    const number =
+        parseInt(
+            cell.dataset.number
+        );
+
+
+    const boardNumber =
+        document.getElementById(
+            "number-" + number
+        );
+
+
+    /*
+    Number must have been called.
+    */
+
+    if (
+        !boardNumber ||
+        !boardNumber.classList.contains(
+            "called-number"
+        )
+    ) {
+
+
+        alert(
+            "📢 This number has not been called yet."
+        );
+
+
+        return;
+
+    }
+
+
+    cell.classList.toggle(
+        "marked"
+    );
+
+}
+
+
+
+/* =====================================================
+START GAME
+===================================================== */
+
+function startGame() {
+
+
+    if (!socket) {
+
+        return;
+
+    }
+
+
+    socket.send(
+
+        JSON.stringify({
+
+            action:
+                "start"
+
+        })
+
+    );
+
+}
+
+
+
+/* =====================================================
+CALL NUMBER
+===================================================== */
+
+function callNumber() {
+
+
+    if (!socket) {
+
+        return;
+
+    }
+
+
+    socket.send(
+
+        JSON.stringify({
+
+            action:
+                "call_number"
+
+        })
+
+    );
+
+}
+
+
+
+/* =====================================================
+CLAIM WIN
+===================================================== */
+
+function claimWin(
+    winType
+) {
+
+
+    if (!socket) {
+
+        return;
+
+    }
+
+
+    const markedCells =
+        document.querySelectorAll(
+            ".number-cell.marked"
+        );
+
+
+    const markedNumbers = [];
+
+
+    markedCells.forEach(
+        function(cell) {
+
+
+            markedNumbers.push(
+
+                parseInt(
+                    cell.dataset.number
+                )
+
+            );
+
+        }
+    );
+
+
+    socket.send(
+
+        JSON.stringify({
+
+            action:
+                "claim_win",
+
+            win_type:
+                winType,
+
+            marked_numbers:
+                markedNumbers
+
+        })
+
+    );
+
+}
+
+
+
+/* =====================================================
+WIN HANDLER
+===================================================== */
+
+function handleWin(
+    data
+) {
+
+
+    const notification =
+        document.getElementById(
+            "winNotification"
+        );
+
+
+    const text =
+        document.getElementById(
+            "winText"
+        );
+
+
+    text.innerText =
+        "🎉 " +
+        data.message;
+
+
+    notification.classList.add(
+        "show"
+    );
+
+
+    updateWinnerButtons(
+        data.winners
+    );
+
+
+    /*
+    Winner list
+    */
+
+    const winnerList =
+        document.getElementById(
+            "winnerList"
+        );
+
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+
+    item.className =
+        "winner-item";
+
+
+    item.innerText =
+        "🏆 " +
+        data.message;
+
+
+    winnerList.appendChild(
+        item
+    );
+
+}
+
+
+
+/* =====================================================
+UPDATE WINNER BUTTONS
+===================================================== */
+
+function updateWinnerButtons(
+    winners
+) {
+
+
+    const mapping = {
+
+        early5:
+            "win-early5",
+
+        row1:
+            "win-row1",
+
+        row2:
+            "win-row2",
+
+        row3:
+            "win-row3",
+
+        fullhouse:
+            "win-fullhouse"
+
+    };
+
+
+    Object.keys(mapping).forEach(
+        function(type) {
+
+
+            const button =
+                document.getElementById(
+                    mapping[type]
+                );
+
+
+            if (
+                winners[type]
+            ) {
+
+
+                button.disabled =
+                    true;
+
+
+                button.classList.add(
+                    "already-won"
+                );
+
+
+                button.innerText =
+
+                    "✅ " +
+                    button.innerText +
+                    " — " +
+                    winners[type];
+
+            }
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+CLOSE WINNER
+===================================================== */
+
+function closeWinner() {
+
+
+    document.getElementById(
+        "winNotification"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+
+/* =====================================================
+SEND CHAT
+===================================================== */
+
+function sendChat() {
+
+
+    if (!socket) {
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "chatInput"
+        );
+
+
+    const message =
+        input.value.trim();
+
+
+    if (!message) {
+
+        return;
+
+    }
+
+
+    socket.send(
+
+        JSON.stringify({
+
+            action:
+                "chat",
+
+            message:
+                message
+
+        })
+
+    );
+
+
+    input.value = "";
+
+}
+
+
+
+/* =====================================================
+QUICK CHAT
+===================================================== */
+
+function sendQuickChat(
+    message
+) {
+
+
+    if (!socket) {
+
+        return;
+
+    }
+
+
+    socket.send(
+
+        JSON.stringify({
+
+            action:
+                "chat",
+
+            message:
+                message
+
+        })
+
+    );
+
+}
+
+
+
+/* =====================================================
+EMOJI
+===================================================== */
+
+function addEmoji(
+    emoji
+) {
+
+
+    const input =
+        document.getElementById(
+            "chatInput"
+        );
+
+
+    input.value += emoji;
+
+
+    input.focus();
+
+}
+
+
+
+/* =====================================================
+CHAT MESSAGE
+===================================================== */
+
+function addChatMessage(
+    name,
+    message
+) {
+
+
+    const container =
+        document.getElementById(
+            "chatMessages"
+        );
+
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.className =
+        "chat-message";
+
+
+    div.innerHTML =
+
+        `<strong>
+            👤 ${escapeHtml(name)}
+        </strong>
+
+        <span>
+            ${escapeHtml(message)}
+        </span>`;
+
+
+    container.appendChild(
+        div
+    );
+
+
+    container.scrollTop =
+        container.scrollHeight;
+
+}
+
+
+
+/* =====================================================
+ESCAPE HTML
+===================================================== */
+
+function escapeHtml(
+    text
+) {
+
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.innerText =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
