@@ -1367,34 +1367,49 @@ function connectToRoom(
             CHAT
             ========================================= */
 
-            if (
-                data.type === "chat"
-            ) {
+           if (
+    data.type === "chat"
+) {
+
+    // Add message to chat for EVERYONE
+    addChatMessage(
+        data.name,
+        data.message
+    );
 
 
-                addChatMessage(
+    // =================================================
+    // CHAT POPUP
+    // =================================================
+    //
+    // If the message was sent by ME:
+    //     Don't show popup.
+    //
+    // If another player sent it:
+    //     Show popup.
+    //
+    // This means:
+    // Player A sends message
+    //     ↓
+    // Player B → popup
+    // Player C → popup
+    // Player D → popup
+    // Player A → NO popup
+    //
+    // =================================================
 
-                    data.name,
+    if (
+        data.sender_id !== myPlayerId
+    ) {
 
-                    data.message
+        showChatPopup(
+            data.name,
+            data.message
+        );
 
-                );
+    }
 
-
-                /*
-                Show popup for incoming chat.
-                */
-
-                showChatPopup(
-
-                    data.name,
-
-                    data.message
-
-                );
-
-            }
-
+}
 
 
             /* =========================================
