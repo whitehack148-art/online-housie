@@ -975,7 +975,7 @@ CHAT INPUT
 
 /* =====================================================
    CHAT POPUP
-   ===================================================== */
+===================================================== */
 
 .chat-popup {
     position: fixed !important;
@@ -990,7 +990,9 @@ CHAT INPUT
 
     padding: 15px 18px;
 
-    background: white;
+    background: #ffffff !important;
+
+    color: #222222 !important;
 
     border-radius: 12px;
 
@@ -1016,7 +1018,7 @@ CHAT INPUT
 
 /* =====================================================
    SHOW POPUP
-   ===================================================== */
+===================================================== */
 
 .chat-popup.show {
 
@@ -1031,11 +1033,17 @@ CHAT INPUT
 
 /* =====================================================
    POPUP TITLE
-   ===================================================== */
+===================================================== */
 
 .chat-popup-title {
 
-    font-weight: bold;
+    display: block;
+
+    color: #222222 !important;
+
+    font-weight: 700;
+
+    font-size: 16px;
 
     margin-bottom: 8px;
 
@@ -1044,9 +1052,17 @@ CHAT INPUT
 
 /* =====================================================
    POPUP MESSAGE
-   ===================================================== */
+===================================================== */
 
 .chat-popup-message {
+
+    display: block;
+
+    color: #222222 !important;
+
+    font-size: 15px;
+
+    line-height: 1.4;
 
     word-wrap: break-word;
 
@@ -1056,8 +1072,21 @@ CHAT INPUT
 
 
 /* =====================================================
+   MESSAGE SENDER
+===================================================== */
+
+.chat-popup-message strong {
+
+    color: #111111 !important;
+
+    font-weight: 700;
+
+}
+
+
+/* =====================================================
    MOBILE
-   ===================================================== */
+===================================================== */
 
 @media (max-width: 600px) {
 
@@ -1079,233 +1108,11 @@ CHAT INPUT
 
         padding: 13px 15px;
 
+        background: #ffffff !important;
+
+        color: #222222 !important;
+
         z-index: 999999 !important;
-
-    }
-
-}
-
-/* =====================================================
-WINNER POPUP
-===================================================== */
-
-.win-notification {
-
-    position: fixed;
-
-    left: 50%;
-
-    top: 50%;
-
-    transform:
-        translate(
-            -50%,
-            -50%
-        )
-        scale(0);
-
-    width: 90%;
-
-    max-width: 500px;
-
-    padding: 35px;
-
-    text-align: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #f59e0b,
-            #dc2626
-        );
-
-    border-radius: 25px;
-
-    box-shadow:
-        0 20px 60px
-        rgba(
-            0,
-            0,
-            0,
-            0.5
-        );
-
-    z-index: 9999;
-
-    transition:
-        transform 0.4s;
-
-}
-
-
-.win-notification.show {
-
-    transform:
-        translate(
-            -50%,
-            -50%
-        )
-        scale(1);
-
-    animation:
-        winnerShake 0.7s;
-
-}
-
-
-.confetti {
-
-    font-size: 35px;
-
-    margin-bottom: 15px;
-
-}
-
-
-#winText {
-
-    font-size: 25px;
-
-    font-weight: bold;
-
-    margin-bottom: 20px;
-
-}
-
-
-@keyframes winnerShake {
-
-    0% {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(0)
-            scale(1);
-
-    }
-
-    25% {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(-3deg)
-            scale(1.05);
-
-    }
-
-    50% {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(3deg)
-            scale(1.05);
-
-    }
-
-    75% {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(-2deg)
-            scale(1.03);
-
-    }
-
-    100% {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(0)
-            scale(1);
-
-    }
-
-}
-
-
-/* =====================================================
-MOBILE
-===================================================== */
-
-@media (
-    max-width: 800px
-) {
-
-
-    .game-layout {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-
-    .top-bar {
-
-        grid-template-columns:
-            1fr;
-
-        text-align: center;
-
-    }
-
-
-    .players-list {
-
-        justify-content:
-            center;
-
-    }
-
-
-    .title-section h1 {
-
-        font-size: 28px;
-
-    }
-
-
-    #currentNumber {
-
-        font-size: 55px;
-
-    }
-
-
-    .ticket-cell {
-
-        font-size: 16px;
-
-    }
-
-
-    .number-board {
-
-        grid-template-columns:
-            repeat(10, 1fr);
-
-    }
-
-
-    .chat-input {
-
-        flex-direction:
-            column;
-
-    }
-
-
-    .chat-popup {
-
-        top: 15px;
-
-        right: 15px;
-
-        left: 15px;
-
-        width: auto;
-
-        max-width: none;
 
     }
 
