@@ -1,7 +1,3 @@
-/* =====================================================
-   RESET
-===================================================== */
-
 * {
     box-sizing: border-box;
 }
@@ -14,31 +10,12 @@ body {
     min-height: 100%;
 }
 
-html {
-    overflow-x: hidden;
-}
-
 body {
     font-family: Arial, Helvetica, sans-serif;
     background: #0f172a;
     color: #ffffff;
     overflow-x: hidden;
 }
-
-
-/* =====================================================
-   BUTTON / INPUT INHERIT
-===================================================== */
-
-button,
-input {
-    font-family: inherit;
-}
-
-
-/* =====================================================
-   MAIN CONTAINER
-===================================================== */
 
 .container {
     width: 100%;
@@ -47,11 +24,6 @@ input {
     padding: 20px;
 }
 
-
-/* =====================================================
-   TITLE
-===================================================== */
-
 .title-section {
     text-align: center;
     margin-bottom: 25px;
@@ -59,20 +31,15 @@ input {
 
 .title-section h1 {
     margin: 0;
-    font-size: clamp(25px, 4vw, 38px);
+    font-size: 38px;
     font-weight: 800;
 }
 
 .title-section p {
-    margin: 8px 0 0;
+    margin-top: 8px;
     color: #cbd5e1;
-    font-size: clamp(14px, 2vw, 17px);
+    font-size: 17px;
 }
-
-
-/* =====================================================
-   LOGIN CARD
-===================================================== */
 
 .login-card {
     width: 100%;
@@ -103,31 +70,20 @@ input {
     outline: none;
 }
 
-.login-card input::placeholder,
-.chat-input input::placeholder {
-    color: #94a3b8;
-}
-
 .login-card input:focus {
     border-color: #38bdf8;
 }
 
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
 .primary-button,
 .secondary-button {
     width: 100%;
-    min-height: 48px;
+    height: 48px;
     border: none;
     border-radius: 10px;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     margin-bottom: 12px;
-    touch-action: manipulation;
 }
 
 .primary-button {
@@ -144,16 +100,6 @@ input {
 .secondary-button:hover {
     opacity: 0.9;
 }
-
-.primary-button:active,
-.secondary-button:active {
-    transform: scale(0.98);
-}
-
-
-/* =====================================================
-   LOGIN MESSAGE
-===================================================== */
 
 .or {
     margin: 5px 0 15px;
@@ -179,11 +125,6 @@ input {
     letter-spacing: 3px;
 }
 
-
-/* =====================================================
-   TOP BAR
-===================================================== */
-
 .top-bar {
     display: flex;
     align-items: center;
@@ -196,7 +137,6 @@ input {
 }
 
 .top-bar > div {
-    min-width: 0;
     flex-shrink: 0;
 }
 
@@ -219,7 +159,6 @@ input {
     flex-wrap: wrap;
     gap: 8px;
     flex: 1;
-    min-width: 0;
 }
 
 .player-name {
@@ -227,22 +166,12 @@ input {
     background: #334155;
     border-radius: 8px;
     font-size: 14px;
-    white-space: nowrap;
 }
-
-
-/* =====================================================
-   GAME LAYOUT
-===================================================== */
 
 .game-layout {
     display: grid;
-    grid-template-columns:
-        minmax(0, 2fr)
-        minmax(320px, 1fr);
-
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
     gap: 20px;
-
     align-items: start;
 }
 
@@ -250,11 +179,6 @@ input {
 .right-column {
     min-width: 0;
 }
-
-
-/* =====================================================
-   NUMBER CARD
-===================================================== */
 
 .number-card {
     width: 100%;
@@ -274,24 +198,16 @@ input {
 }
 
 #currentNumber {
-    font-size: clamp(55px, 7vw, 75px);
+    font-size: 75px;
     font-weight: 900;
     color: #38bdf8;
     line-height: 1;
 }
 
-
-/* =====================================================
-   HOST CONTROLS
-===================================================== */
-
 .controls {
     display: grid;
-    grid-template-columns:
-        repeat(3, 1fr);
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-
     margin-bottom: 15px;
 }
 
@@ -303,39 +219,16 @@ input {
     font-weight: bold;
     cursor: pointer;
     padding: 10px;
-    touch-action: manipulation;
 }
 
-.start-button {
-    background: #22c55e;
-}
-
-.stop-button {
-    background: #ef4444;
-}
-
-.call-button {
-    background: #3b82f6;
-}
-
-.controls button:hover {
-    opacity: 0.9;
-}
-
-.controls button:active {
-    transform: scale(0.98);
-}
+.start-button { background: #22c55e; }
+.stop-button { background: #ef4444; }
+.call-button { background: #3b82f6; }
 
 .controls button:disabled {
     opacity: 0.45;
     cursor: not-allowed;
-    transform: none;
 }
-
-
-/* =====================================================
-   GAME MESSAGE
-===================================================== */
 
 .game-message {
     margin-bottom: 20px;
@@ -344,13 +237,7 @@ input {
     border-radius: 10px;
     color: #cbd5e1;
     text-align: center;
-    line-height: 1.5;
 }
-
-
-/* =====================================================
-   GENERAL SECTIONS
-===================================================== */
 
 .ticket-area,
 .winning-area,
@@ -374,59 +261,34 @@ input {
     margin-bottom: 18px;
     color: #94a3b8;
     font-size: 14px;
-    line-height: 1.5;
 }
-
-
-/* =====================================================
-   TICKET
-===================================================== */
 
 .ticket {
     width: 100%;
     overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
 }
 
 .ticket-row {
     display: grid;
-    grid-template-columns:
-        repeat(9, minmax(35px, 1fr));
-
-    width: 100%;
-    min-width: 405px;
+    grid-template-columns: repeat(9, minmax(35px, 1fr));
 }
 
 .ticket-cell {
     min-height: 52px;
     border: 1px solid #475569;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-weight: bold;
     user-select: none;
-
-    transition:
-        background 0.15s ease,
-        transform 0.15s ease;
 }
 
 .number-cell {
     background: #334155;
     cursor: pointer;
-    touch-action: manipulation;
 }
 
-.number-cell:hover {
-    background: #475569;
-}
-
-.number-cell:active {
-    transform: scale(0.95);
-}
+.number-cell:hover { background: #475569; }
 
 .number-cell.marked {
     background: #22c55e;
@@ -435,33 +297,21 @@ input {
     border-radius: 6px;
 }
 
-.empty-cell {
-    background: #0f172a;
-}
-
-
-/* =====================================================
-   NUMBER BOARD
-===================================================== */
+.empty-cell { background: #0f172a; }
 
 .number-board {
     display: grid;
-    grid-template-columns:
-        repeat(10, minmax(0, 1fr));
-
+    grid-template-columns: repeat(10, 1fr);
     gap: 6px;
 }
 
 .board-number {
     min-height: 38px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     background: #334155;
     border-radius: 7px;
-
     font-weight: bold;
     font-size: 14px;
 }
@@ -471,49 +321,24 @@ input {
     color: #ffffff;
 }
 
-
-/* =====================================================
-   WINNING OPTIONS
-===================================================== */
-
 .win-button {
     width: 100%;
     min-height: 45px;
-
     margin-bottom: 9px;
-
     border: none;
     border-radius: 9px;
-
     background: #3b82f6;
     color: #ffffff;
-
     font-weight: bold;
     cursor: pointer;
-
-    touch-action: manipulation;
 }
 
-.win-button:hover {
-    opacity: 0.9;
-}
+.win-button:hover { opacity: 0.9; }
+.win-button:disabled { cursor: not-allowed; }
+.win-button.already-won { background: #475569; opacity: 0.8; }
+.full-house { background: #f59e0b; }
 
-.win-button:disabled {
-    cursor: not-allowed;
-}
-
-.win-button.already-won {
-    background: #475569;
-    opacity: 0.8;
-}
-
-.full-house {
-    background: #f59e0b;
-}
-
-.winner-list {
-    margin-top: 15px;
-}
+.winner-list { margin-top: 15px; }
 
 .winner-item {
     padding: 10px;
@@ -521,30 +346,18 @@ input {
     background: #334155;
     border-radius: 8px;
     font-size: 14px;
-    line-height: 1.4;
 }
 
-
-/* =====================================================
-   CHAT
-===================================================== */
-
-.chat-area {
-    position: relative;
-}
+.chat-area { position: relative; }
 
 .chat-messages {
     width: 100%;
     height: 250px;
-
     overflow-y: auto;
     overflow-x: hidden;
-
     padding: 10px;
     margin-bottom: 15px;
-
     background: #0f172a;
-
     border: 1px solid #334155;
     border-radius: 10px;
 }
@@ -552,30 +365,18 @@ input {
 .chat-message {
     margin-bottom: 10px;
     padding: 9px 11px;
-
     background: #334155;
     border-radius: 8px;
-
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    word-wrap: break-word;
 }
 
 .chat-message strong {
     display: block;
-
     color: #38bdf8;
-
     margin-bottom: 3px;
 }
 
-.chat-message span {
-    color: #ffffff;
-}
-
-
-/* =====================================================
-   QUICK CHAT
-===================================================== */
+.chat-message span { color: #ffffff; }
 
 .quick-chat,
 .emoji-buttons {
@@ -589,33 +390,15 @@ input {
 .emoji-buttons button {
     border: none;
     border-radius: 8px;
-
     padding: 8px 10px;
-
     background: #334155;
     color: #ffffff;
-
     cursor: pointer;
-
     font-size: 13px;
-
-    touch-action: manipulation;
 }
 
 .quick-chat button:hover,
-.emoji-buttons button:hover {
-    background: #475569;
-}
-
-.quick-chat button:active,
-.emoji-buttons button:active {
-    transform: scale(0.95);
-}
-
-
-/* =====================================================
-   CHAT INPUT
-===================================================== */
+.emoji-buttons button:hover { background: #475569; }
 
 .chat-input {
     display: flex;
@@ -626,184 +409,97 @@ input {
 .chat-input input {
     flex: 1;
     min-width: 0;
-
     height: 45px;
-
     padding: 0 12px;
-
     border: 1px solid #475569;
     border-radius: 8px;
-
     background: #0f172a;
     color: #ffffff;
-
     outline: none;
-
-    font-size: 15px;
 }
 
-.chat-input input:focus {
-    border-color: #38bdf8;
-}
+.chat-input input:focus { border-color: #38bdf8; }
 
 .chat-input button {
     width: 80px;
     flex-shrink: 0;
-
     border: none;
     border-radius: 8px;
-
     background: #3b82f6;
     color: #ffffff;
-
     font-weight: bold;
     cursor: pointer;
 }
 
-.chat-input button:hover {
-    opacity: 0.9;
-}
-
-
-/* =====================================================
-   CHAT POPUP
-===================================================== */
-
 .chat-popup {
     position: fixed;
-
     top: 25px;
     right: 25px;
-
-    width: min(
-        380px,
-        calc(100vw - 40px)
-    );
-
+    width: min(380px, calc(100vw - 40px));
     min-height: 80px;
-
     padding: 16px 18px;
-
     background: #111827;
-
     border: 2px solid #38bdf8;
-
     border-radius: 14px;
-
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.5);
-
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
     color: #ffffff;
-
     opacity: 0;
     visibility: hidden;
-
-    transform:
-        translateY(-25px)
-        scale(0.95);
-
-    transition:
-        opacity 0.25s ease,
-        transform 0.25s ease,
-        visibility 0.25s ease;
-
+    transform: translateY(-25px) scale(0.95);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
     z-index: 99999;
-
     pointer-events: none;
-
     overflow: hidden;
 }
 
 .chat-popup.show {
     opacity: 1;
     visibility: visible;
-
-    transform:
-        translateY(0)
-        scale(1);
+    transform: translateY(0) scale(1);
 }
 
 .chat-popup-title {
     display: block;
-
     margin-bottom: 8px;
-
     color: #38bdf8;
-
     font-size: 15px;
     font-weight: 800;
-
     line-height: 1.3;
 }
 
 .chat-popup-message {
     display: block;
-
     width: 100%;
-
     color: #ffffff;
-
     font-size: 15px;
-
     line-height: 1.45;
-
     white-space: normal;
-
     overflow-wrap: anywhere;
     word-break: break-word;
 }
 
-
-/* =====================================================
-   WINNER POPUP
-===================================================== */
-
 .win-notification {
     position: fixed;
-
     top: 50%;
     left: 50%;
-
-    width: min(
-        500px,
-        calc(100vw - 30px)
-    );
-
+    width: min(500px, calc(100vw - 30px));
     padding: 30px;
-
     background: #111827;
-
     border: 2px solid #f59e0b;
-
     border-radius: 18px;
-
     text-align: center;
-
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.6);
-
-    transform:
-        translate(-50%, -50%)
-        scale(0.8);
-
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+    transform: translate(-50%, -50%) scale(0.8);
     opacity: 0;
     visibility: hidden;
-
-    transition:
-        opacity 0.25s ease,
-        transform 0.25s ease,
-        visibility 0.25s ease;
-
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
     z-index: 100000;
 }
 
 .win-notification.show {
     opacity: 1;
     visibility: visible;
-
-    transform:
-        translate(-50%, -50%)
-        scale(1);
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .confetti {
@@ -819,182 +515,97 @@ input {
 
 .win-notification button {
     margin-top: 20px;
-
     width: 100px;
     height: 42px;
-
     border: none;
     border-radius: 8px;
-
     background: #22c55e;
     color: #ffffff;
-
     font-weight: bold;
     cursor: pointer;
 }
 
-
-/* =====================================================
-   TABLET
-===================================================== */
-
 @media (max-width: 1000px) {
-
-    .container {
-        padding: 15px;
-    }
-
-    .game-layout {
-        grid-template-columns: 1fr;
-    }
-
+    .container { padding: 15px; }
+    .game-layout { grid-template-columns: 1fr; }
     .right-column {
         display: grid;
-
-        grid-template-columns:
-            minmax(0, 1fr)
-            minmax(0, 1fr);
-
+        grid-template-columns: 1fr 1fr;
         gap: 15px;
-
         align-items: start;
     }
-
     .winning-area,
-    .chat-area {
-        margin-bottom: 0;
-    }
-
-    .number-board {
-        grid-template-columns:
-            repeat(10, minmax(0, 1fr));
-    }
+    .chat-area { margin-bottom: 0; }
 }
 
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
 @media (max-width: 650px) {
+    body { font-size: 14px; }
+    .container { padding: 10px; }
 
-    body {
-        font-size: 14px;
-    }
-
-    .container {
-        padding: 10px;
-    }
-
-
-    /* TITLE */
-
-    .title-section {
-        margin-bottom: 15px;
-    }
-
-
-    /* LOGIN */
+    .title-section { margin-bottom: 15px; }
+    .title-section h1 { font-size: 25px; }
+    .title-section p { font-size: 14px; }
 
     .login-card {
         margin: 20px auto;
         padding: 20px 15px;
     }
 
-
-    /* TOP BAR */
-
     .top-bar {
         display: grid;
-
-        grid-template-columns:
-            1fr 1fr;
-
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
-
         padding: 12px;
-
         margin-bottom: 12px;
     }
 
     .players-list {
         grid-column: 1 / -1;
-
         max-height: 90px;
-
         overflow-y: auto;
-        overflow-x: hidden;
     }
-
-
-    /* NUMBER */
 
     .number-card {
         padding: 18px;
         margin-bottom: 12px;
     }
 
-    #currentNumber {
-        font-size: 55px;
-    }
-
-
-    /* CONTROLS */
+    #currentNumber { font-size: 55px; }
 
     .controls {
         grid-template-columns: 1fr;
         gap: 8px;
     }
 
-    .controls button {
-        min-height: 45px;
-    }
-
-
-    /* MESSAGE */
+    .controls button { min-height: 45px; }
 
     .game-message {
         padding: 10px;
         margin-bottom: 12px;
     }
 
-
-    /* SECTIONS */
-
     .ticket-area,
     .winning-area,
     .chat-area {
         padding: 13px;
-
         border-radius: 12px;
-
         margin-bottom: 12px;
     }
-
-
-    /* TICKET */
 
     .ticket {
         overflow-x: auto;
         padding-bottom: 5px;
     }
 
-    .ticket-row {
-        min-width: 405px;
-    }
+    .ticket-row { min-width: 405px; }
 
     .ticket-cell {
         min-height: 45px;
         font-size: 14px;
     }
 
-
-    /* NUMBER BOARD */
-
     .number-board {
-        grid-template-columns:
-            repeat(6, minmax(0, 1fr));
-
+        grid-template-columns: repeat(6, 1fr);
         gap: 5px;
     }
 
@@ -1003,40 +614,21 @@ input {
         font-size: 13px;
     }
 
-
-    /* RIGHT */
-
-    .right-column {
-        display: block;
-    }
+    .right-column { display: block; }
 
     .winning-area,
-    .chat-area {
-        margin-bottom: 12px;
-    }
+    .chat-area { margin-bottom: 12px; }
 
-
-    /* CHAT */
-
-    .chat-messages {
-        height: 200px;
-    }
-
+    .chat-messages { height: 200px; }
 
     .quick-chat button,
-    .emoji-buttons button {
-        padding: 8px 9px;
-    }
+    .emoji-buttons button { padding: 8px 9px; }
 
-
-    .chat-input {
-        gap: 6px;
-    }
+    .chat-input { gap: 6px; }
 
     .chat-input input {
         width: 100%;
         height: 43px;
-        font-size: 14px;
     }
 
     .chat-input button {
@@ -1044,35 +636,18 @@ input {
         height: 43px;
     }
 
-
-    /* CHAT POPUP */
-
     .chat-popup {
-
         top: 12px;
-
         left: 10px;
         right: 10px;
-
         width: auto;
-
         min-height: auto;
-
         padding: 13px 15px;
-
         border-radius: 12px;
-
-        transform:
-            translateY(-25px)
-            scale(0.96);
+        transform: translateY(-25px) scale(0.96);
     }
 
-    .chat-popup.show {
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
+    .chat-popup.show { transform: translateY(0) scale(1); }
 
     .chat-popup-title {
         font-size: 14px;
@@ -1084,91 +659,28 @@ input {
         line-height: 1.4;
     }
 
-
-    /* WIN POPUP */
-
     .win-notification {
         width: calc(100vw - 30px);
         padding: 22px 16px;
     }
 
-    #winText {
-        font-size: 17px;
-    }
+    #winText { font-size: 17px; }
 }
 
-
-/* =====================================================
-   VERY SMALL MOBILE
-===================================================== */
-
 @media (max-width: 380px) {
-
-    .container {
-        padding: 7px;
-    }
-
-    .title-section h1 {
-        font-size: 22px;
-    }
-
-    #currentNumber {
-        font-size: 48px;
-    }
-
-    .ticket-row {
-        min-width: 360px;
-    }
+    .title-section h1 { font-size: 22px; }
+    #currentNumber { font-size: 48px; }
+    .ticket-row { min-width: 360px; }
 
     .ticket-cell {
         min-height: 40px;
         font-size: 13px;
     }
 
-    .number-board {
-        gap: 4px;
-    }
+    .number-board { gap: 4px; }
 
     .board-number {
         min-height: 32px;
         font-size: 12px;
-    }
-
-    .chat-input button {
-        width: 62px;
-        font-size: 13px;
-    }
-}
-
-
-/* =====================================================
-   LANDSCAPE MOBILE
-===================================================== */
-
-@media (max-width: 900px) and (orientation: landscape) {
-
-    .container {
-        padding: 10px;
-    }
-
-    .top-bar {
-        margin-bottom: 10px;
-    }
-
-    .number-card {
-        padding: 12px;
-    }
-
-    #currentNumber {
-        font-size: 48px;
-    }
-
-    .controls {
-        grid-template-columns:
-            repeat(3, 1fr);
-    }
-
-    .chat-messages {
-        height: 160px;
     }
 }
