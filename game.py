@@ -3,38 +3,30 @@ import random
 
 def generate_ticket():
     """
-    Generate a standard 3 x 9 Housie/Tambola ticket.
+    Generate a standard 3 x 9 Housie ticket.
 
-    Rules:
-    - 3 rows
-    - 9 columns
-    - 5 numbers in every row
-    - 15 numbers total
-    - Every column contains at least one number
-    - Numbers follow standard Housie column ranges
+    Each row has exactly 5 numbers.
+    Total numbers = 15.
     """
 
     column_ranges = [
-        list(range(1, 10)),     # 1-9
-        list(range(10, 20)),    # 10-19
-        list(range(20, 30)),    # 20-29
-        list(range(30, 40)),    # 30-39
-        list(range(40, 50)),    # 40-49
-        list(range(50, 60)),    # 50-59
-        list(range(60, 70)),    # 60-69
-        list(range(70, 80)),    # 70-79
-        list(range(80, 91))     # 80-90
+        list(range(1, 10)),
+        list(range(10, 20)),
+        list(range(20, 30)),
+        list(range(30, 40)),
+        list(range(40, 50)),
+        list(range(50, 60)),
+        list(range(60, 70)),
+        list(range(70, 80)),
+        list(range(80, 91))
     ]
 
     while True:
-
-        # Select exactly 5 columns for each row.
         row_columns = [
             random.sample(range(9), 5)
             for _ in range(3)
         ]
 
-        # Every column must be used at least once.
         used_columns = set()
 
         for row in row_columns:
@@ -48,9 +40,7 @@ def generate_ticket():
             for _ in range(3)
         ]
 
-        # Fill each column.
         for column in range(9):
-
             rows = [
                 row
                 for row in range(3)
@@ -62,20 +52,9 @@ def generate_ticket():
                 len(rows)
             )
 
-            # Standard ticket ordering.
             numbers.sort()
 
             for row, number in zip(rows, numbers):
                 ticket[row][column] = number
 
-        # Safety check:
-        # Every row must contain exactly 5 numbers.
-        if all(
-            sum(
-                number is not None
-                for number in row
-            ) == 5
-            for row in ticket
-        ):
-
-            return ticket
+        return ticket
